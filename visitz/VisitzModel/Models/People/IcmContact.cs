@@ -477,4 +477,11 @@ public partial class IcmContact : IRealmObject, IRowMetadata, IApiJson<ContactJs
             .Where(contact => contact.Relationship == KeyPlayer)
             .FirstOrDefault();
     }
+
+    public static IQueryable<IcmContact> GetByParentIdAndType(Realm realm, string parentId, EntityType type)
+    {
+        return realm
+            .All<IcmContact>()
+            .Where(contact => contact.ParentId == parentId && contact.ParentTypeInt == (int)type);
+    }
 }

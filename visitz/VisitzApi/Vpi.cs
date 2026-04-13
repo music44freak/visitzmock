@@ -3,6 +3,7 @@ using VisitzApi.Endpoints.Attachments;
 using VisitzApi.Endpoints.CallDetails;
 using VisitzApi.Endpoints.Caseload;
 using VisitzApi.Endpoints.Notes;
+using VisitzApi.Endpoints.People;
 using VisitzApi.Endpoints.SafetyAssess;
 using VisitzApi.Endpoints.Visits;
 using VisitzApi.ErrorHandling;
@@ -175,6 +176,18 @@ namespace VisitzApi
         )
         {
             return await CallApi(new AdditionalInformationEndpoint(BaseVisitzApiUrl, type, id, pagination));
+        }
+
+        public async Task<(int TotalRecords, IEnumerable<ContactLegalAuditTrailJson>)> GetContactLegalAuditTrail(
+            ApiRecordType type,
+            string recordId,
+            string contactId,
+            Pagination? pagination = null
+        )
+        {
+            return await CallApi(
+                new ContactLegalAuditTrailEndpoint(BaseVisitzApiUrl, type, recordId, contactId, pagination)
+            );
         }
     }
 }

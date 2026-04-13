@@ -1060,5 +1060,8 @@ Do you want to download information for this record?</value>
 	<data name="AdditionalInformation" xml:space="preserve">
     <value>AdditionalInformation</value>
   </data>
+  <data name="ContactLegalAuditTrail" xml:space="preserve">
+    <value>Contact legal audit trail</value>
+  </data>
 </root>
  

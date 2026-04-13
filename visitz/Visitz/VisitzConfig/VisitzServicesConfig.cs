@@ -47,9 +47,11 @@ namespace Visitz.VisitzConfig
             builder.Services.AddTransient<GetIncidentConcernsByRangeService>();
             builder.Services.AddTransient<GetCallInformationService>();
             builder.Services.AddTransient<GetCallInformationByRangeService>();
-
             builder.Services.AddTransient<GetAdditionalInformationService>();
             builder.Services.AddTransient<GetAdditionalInformationByRangeService>();
+            builder.Services.AddTransient<GetContactLegalAuditTrailService>();
+            builder.Services.AddTransient<GetContactLegalAuditTrailByRangeService>();
+
             return builder;
         }
 
