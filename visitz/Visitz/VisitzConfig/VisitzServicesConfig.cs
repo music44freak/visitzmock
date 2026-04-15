@@ -52,6 +52,8 @@ namespace Visitz.VisitzConfig
 
             builder.Services.AddTransient<GetAdditionalInformationService>();
             builder.Services.AddTransient<GetAdditionalInformationByRangeService>();
+            builder.Services.AddTransient<GetContactLanguagesService>();
+            builder.Services.AddTransient<GetContactLanguagesByRangeService>();
             return builder;
         }
 
