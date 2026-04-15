@@ -189,5 +189,14 @@ namespace VisitzApi
                 new ContactMedicalBehavioralEndpoint(BaseVisitzApiUrl, type, recordId, contactId, pagination)
             );
         }
+
+        public async Task<bool> SubmitSupportNetworkItemAsync(
+            ApiRecordType type,
+            string id,
+            SubmitSupportNetworkJson supportNetwork
+        )
+        {
+            return await CallApi(new SubmitSupportNetworkEndpoint(BaseVisitzApiUrl, type, id, supportNetwork));
+        }
     }
 }
