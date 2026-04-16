@@ -1063,5 +1063,8 @@ Do you want to download information for this record?</value>
 <data name="ContactMedicalBehavioral" xml:space="preserve">
     <value>Contact medical behavioral</value>
   </data>
+  <data name="ContactLegalAuthority" xml:space="preserve">
+    <value>Contact legal authority</value>
+  </data>
 </root>
  

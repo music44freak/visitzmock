@@ -544,6 +544,15 @@ namespace Visitz.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Contact legal authority.
+        /// </summary>
+        public static string ContactLegalAuthority {
+            get {
+                return ResourceManager.GetString("ContactLegalAuthority", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Continue draft.
         /// </summary>
         public static string ContinueDraft {
