@@ -99,10 +99,14 @@ namespace Visitz.Services.Caseload
                 GetAllAdditionalInformation(memosIncidentsSrs, exceptions)
             );
 
+            //Get Contact related info AFTER fetching all contacts from DBs
             using var realm = await VisitzRealms.GetIcmDataRealmAsync();
             var allContacts = realm.All<IcmContact>().Freeze().ToList().Distinct();
-            //Get Contact related info AFTER fetching all contacts from DBs
-            await GetContactMedicalBehavioral(allContacts, exceptions);
+
+            await Task.WhenAll(
+                GetContactMedicalBehavioral(allContacts, exceptions),
+                GetContactEducation(allContacts, exceptions)
+            );
 
             // Get attachment files AFTER other dependent info so we
             // complete text-only downloads sooner
@@ -303,6 +307,19 @@ namespace Visitz.Services.Caseload
             catch (Exception ex)
             {
                 exceptions.Add(MakeDownloadEx(LocalizedStrings.ContactMedicalBehavioral, ex));
+            }
+        }
+
+        private async Task GetContactEducation(IEnumerable<IcmContact> allContacts, List<Exception> exceptions)
+        {
+            try
+            {
+                var startMessage = GetContactEducationByRangeService.MakeStartMessage(allContacts);
+                await ServiceHandler.TryRunServiceAsync(startMessage);
+            }
+            catch (Exception ex)
+            {
+                exceptions.Add(MakeDownloadEx(LocalizedStrings.ContactEducation, ex));
             }
         }
     }

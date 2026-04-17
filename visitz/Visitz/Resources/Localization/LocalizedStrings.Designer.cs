@@ -535,6 +535,15 @@ namespace Visitz.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Contact education.
+        /// </summary>
+        public static string ContactEducation {
+            get {
+                return ResourceManager.GetString("ContactEducation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contact medical behavioral.
         /// </summary>
         public static string ContactMedicalBehavioral {

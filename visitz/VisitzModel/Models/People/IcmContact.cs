@@ -466,7 +466,10 @@ public partial class IcmContact
             .Where(item => item.ParentId == parentId && item.ParentTypeInt == (int)type);
 
         foreach (var contact in contacts)
+        {
             ContactMedicalBehavioral.RemoveByParent(realm, contact.Id);
+            ContactEducation.RemoveByParent(realm, contact.Id);
+        }
 
         realm.RemoveRange(contacts);
     }

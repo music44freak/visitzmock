@@ -70,7 +70,10 @@ public class GetAllDataForRecordService(Vpi vpi, LastUpdatedPrefs prefs, Service
         );
 
         var contacts = BusinessObject.Contacts.Freeze();
-        await GetContactMedicalBehavioral(contacts, exceptions);
+        await Task.WhenAll(
+            GetContactMedicalBehavioral(contacts, exceptions),
+            GetContactEducation(contacts, exceptions)
+        );
 
         // Get attachment files AFTER other dependent info so we
         // complete text-only downloads sooner
@@ -281,6 +284,20 @@ public class GetAllDataForRecordService(Vpi vpi, LastUpdatedPrefs prefs, Service
         catch (Exception ex)
         {
             exceptions.Add(MakeDownloadEx(LocalizedStrings.ContactMedicalBehavioral, ex));
+            return Result.Error;
+        }
+    }
+
+    async Task<Result> GetContactEducation(IEnumerable<IcmContact> contacts, List<Exception> exceptions)
+    {
+        try
+        {
+            var startMessage = GetContactEducationByRangeService.MakeStartMessage(contacts);
+            return await ServiceHandler.TryRunServiceAsync(startMessage);
+        }
+        catch (Exception ex)
+        {
+            exceptions.Add(MakeDownloadEx(LocalizedStrings.ContactEducation, ex));
             return Result.Error;
         }
     }
