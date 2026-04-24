@@ -7,23 +7,20 @@ using Visitz.FontIcons;
 using Visitz.Resources.Localization;
 using Visitz.Storage;
 using Visitz.Views.BaseClasses;
-using VisitzModel.Interfaces;
 using VisitzModel.Models;
-using VisitzModel.Models.Caseload;
 using VisitzModel.Models.SafetyAssess;
 
 namespace Visitz.Views.Entity.SafetyAssess;
 
-internal partial class SafetyAssessmentListViewModel : VisitzViewModel, IBusinessObjectHolder
+#nullable enable
+
+public partial class SafetyAssessmentListViewModel : IcmRecordViewModel
 {
     [ObservableProperty]
-    public IBusinessObject businessObject;
+    public string editViewButtonText = "";
 
     [ObservableProperty]
-    public string editViewButtonText;
-
-    [ObservableProperty]
-    public string editViewButtonGlyph;
+    public string editViewButtonGlyph = "";
 
     [ObservableProperty]
     public ObservableCollection<SafetyAssessment> assessments = [];
@@ -65,8 +62,8 @@ internal partial class SafetyAssessmentListViewModel : VisitzViewModel, IBusines
     }
 
     private void RealmQueryMap_ItemsChanged(
-        object sender,
-        (Type Type, IRealmCollection<IRealmObject> Items, ChangeSet Changes) e
+        object? sender,
+        (Type Type, IRealmCollection<IRealmObject> Items, ChangeSet? Changes) e
     )
     {
         if (e.Type == typeof(SafetyAssessment))
@@ -75,7 +72,7 @@ internal partial class SafetyAssessmentListViewModel : VisitzViewModel, IBusines
             UpdateEditViewButtonText(e.Items.Any());
     }
 
-    void UpdateSafetyAssessmentsList(IRealmCollection<IRealmObject> items, ChangeSet changes)
+    void UpdateSafetyAssessmentsList(IRealmCollection<IRealmObject> items, ChangeSet? changes)
     {
         if (changes == null)
         {
@@ -88,7 +85,7 @@ internal partial class SafetyAssessmentListViewModel : VisitzViewModel, IBusines
                 Assessments.RemoveAt(i);
 
             foreach (var i in changes.InsertedIndices)
-                Assessments.Add(items.ElementAt(i) as SafetyAssessment);
+                Assessments.Add((SafetyAssessment)items.ElementAt(i));
         }
 
         IsEmpty = !Assessments.Any();
@@ -101,11 +98,13 @@ internal partial class SafetyAssessmentListViewModel : VisitzViewModel, IBusines
     }
 
     [RelayCommand]
-    public async Task OpenSafetyAssessmentView(SafetyAssessment assessment = null)
+    public async Task OpenSafetyAssessmentView(SafetyAssessment? assessment = null)
     {
         var view = ServiceProvider.GetService<SafetyAssessmentEditView>();
 
         view.BusinessObject = BusinessObject;
+        view.ViewModel.RowId = RowId;
+        view.ViewModel.EntityType = EntityType;
 
         if (assessment != null)
             view.ViewAssessment(assessment);

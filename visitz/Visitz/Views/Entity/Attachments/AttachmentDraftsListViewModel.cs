@@ -9,19 +9,16 @@ using Visitz.Views.BaseClasses;
 using Visitz.Views.BaseClasses.Publishing;
 using Visitz.Views.Snackbar;
 using VisitzModel.Extensions;
-using VisitzModel.Interfaces;
 using VisitzModel.Models;
 using VisitzModel.Models.Attachments;
-using VisitzModel.Models.Caseload;
 
 namespace Visitz.Views.Entity.Attachments;
 
-internal partial class AttachmentDraftsListViewModel : VisitzViewModel, IBusinessObjectHolder
-{
-    [ObservableProperty]
-    public IBusinessObject businessObject;
+#nullable enable
 
-    Realm attachmentsRealm;
+public partial class AttachmentDraftsListViewModel : IcmRecordViewModel
+{
+    Realm? attachmentsRealm;
 
     readonly ObservableRealmQueryMap realmQuery = new();
 
@@ -39,6 +36,9 @@ internal partial class AttachmentDraftsListViewModel : VisitzViewModel, IBusines
     protected override async Task InitAsync()
     {
         await base.InitAsync();
+
+        if (DataRealm == null)
+            return;
 
         attachmentsRealm = await VisitzRealms.GetAttachmentDraftsRealmAsync();
 
@@ -66,8 +66,8 @@ internal partial class AttachmentDraftsListViewModel : VisitzViewModel, IBusines
     }
 
     private void RealmQuery_ItemsChanged(
-        object sender,
-        (Type Type, IRealmCollection<IRealmObject> Items, ChangeSet Changes) e
+        object? sender,
+        (Type Type, IRealmCollection<IRealmObject> Items, ChangeSet? Changes) e
     )
     {
         IsLoading = false;
@@ -76,7 +76,7 @@ internal partial class AttachmentDraftsListViewModel : VisitzViewModel, IBusines
         if (e.Changes == null)
         {
             foreach (var item in e.Items)
-                AttachmentDrafts.Add(new AttachmentDraftListItemUi(item as AttachmentDraft));
+                AttachmentDrafts.Add(new AttachmentDraftListItemUi((AttachmentDraft)item));
 
             attachmentsLoadedTcs.TrySetResult();
         }
@@ -86,10 +86,10 @@ internal partial class AttachmentDraftsListViewModel : VisitzViewModel, IBusines
                 AttachmentDrafts.RemoveAt(deleted);
 
             foreach (int modified in e.Changes.ModifiedIndices)
-                AttachmentDrafts[modified] = new AttachmentDraftListItemUi(e.Items[modified] as AttachmentDraft);
+                AttachmentDrafts[modified] = new AttachmentDraftListItemUi((AttachmentDraft)e.Items[modified]);
 
             foreach (int inserted in e.Changes.InsertedIndices)
-                AttachmentDrafts.Insert(inserted, new AttachmentDraftListItemUi(e.Items[inserted] as AttachmentDraft));
+                AttachmentDrafts.Insert(inserted, new AttachmentDraftListItemUi((AttachmentDraft)e.Items[inserted]));
         }
     }
 
@@ -125,6 +125,9 @@ internal partial class AttachmentDraftsListViewModel : VisitzViewModel, IBusines
     async Task DoPublishAttachmentDraft(AttachmentDraft draft)
     {
         var attachmentPublishVm = ServiceProvider.Current.GetService<AttachmentDraftPublishViewModel>();
+        if (attachmentPublishVm == null)
+            return;
+
         await attachmentPublishVm.SetPayload(BusinessObject, draft);
         await Navigator.Navigation.PushModalAsync(new PublishPage(attachmentPublishVm));
     }

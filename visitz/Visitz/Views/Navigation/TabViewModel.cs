@@ -5,7 +5,7 @@ namespace Visitz.Views.Navigation;
 
 #nullable enable
 
-internal partial class TabViewModel : VisitzViewModel
+public partial class TabViewModel : VisitzViewModel
 {
     [ObservableProperty]
     public IEnumerable<Tab>? tabs;

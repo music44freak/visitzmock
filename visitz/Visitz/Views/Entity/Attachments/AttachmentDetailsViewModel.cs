@@ -14,13 +14,10 @@ namespace Visitz.Views.Entity.Attachments;
 
 #nullable enable
 
-internal abstract partial class AttachmentDetailsViewModel : VisitzViewModel
+public abstract partial class AttachmentDetailsViewModel : IcmRecordViewModel
 {
     [ObservableProperty]
     public Attachment? attachment;
-
-    [ObservableProperty]
-    public IBusinessObject? businessObject;
 
     [ObservableProperty]
     public bool showActivityIndicator = true;
@@ -47,7 +44,7 @@ internal abstract partial class AttachmentDetailsViewModel : VisitzViewModel
     {
         await base.InitAsync();
 
-        if (Attachment == null || BusinessObject == null)
+        if (Attachment == null)
         {
             ErrorText = LoadErrorText;
             return;

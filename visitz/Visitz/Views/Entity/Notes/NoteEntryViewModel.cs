@@ -11,25 +11,23 @@ using VisitzApi.Models;
 using VisitzModel.Events;
 using VisitzModel.Extensions;
 using VisitzModel.Extensions.EntityTypes;
-using VisitzModel.Interfaces;
-using VisitzModel.Models.Caseload;
 using VisitzModel.Models.Drafts;
 using VisitzModel.Models.EntityTypes;
 using VisitzModel.Models.Notes;
 
+#nullable enable
+
 namespace Visitz.Views.Entity.Notes
 {
-    public partial class NoteEntryViewModel : VisitzViewModel, IBusinessObjectHolder
+    public partial class NoteEntryViewModel : IcmRecordViewModel
     {
         private static readonly int CharacterLimit = 16000;
         public static readonly string RemainingCharactersString = "{0}/" + CharacterLimit;
 
-        public IBusinessObject BusinessObject { get; set; }
-
         [ObservableProperty]
-        public NoteDraft noteDraft;
+        public NoteDraft noteDraft = new();
 
-        private string DraftOutput => NoteDraft?.Draft?.Trim();
+        private string DraftOutput => NoteDraft.Draft?.Trim() ?? string.Empty;
 
         private bool _disposed;
 
@@ -45,11 +43,11 @@ namespace Visitz.Views.Entity.Notes
         [ObservableProperty]
         private bool internetAvailable = NetworkHelper.InternetAvailable;
 
-        public event EventHandler<DraftErrorEventArgs> DraftError;
+        public event EventHandler<DraftErrorEventArgs>? DraftError;
 
         public DraftSaveStateHandler SaveStateHandler { get; } = new();
 
-        Realm Realm { get; set; }
+        Realm? DraftRealm { get; set; }
 
         protected override async Task InitAsync()
         {
@@ -57,7 +55,9 @@ namespace Visitz.Views.Entity.Notes
 
             Connectivity.Current.ConnectivityChanged += Current_ConnectivityChanged;
 
-            await InitNoteDraft();
+            DraftRealm = await VisitzRealms.GetNoteDraftsRealmAsync();
+            NoteDraft = NoteDraft.FindByEntityId(DraftRealm, BusinessObject.FileNumber) ?? CreateNoteDraft();
+
             SaveStateHandler.Clear();
         }
 
@@ -69,18 +69,12 @@ namespace Visitz.Views.Entity.Notes
 
                 SaveStateHandler.Dispose();
 
-                Realm?.Dispose();
-                Realm = null;
+                DraftRealm?.Dispose();
+                DraftRealm = null;
 
                 _disposed = true;
             }
             base.Dispose(disposing);
-        }
-
-        private async Task InitNoteDraft()
-        {
-            Realm = await VisitzRealms.GetNoteDraftsRealmAsync();
-            NoteDraft = NoteDraft.FindByEntityId(Realm, BusinessObject.FileNumber) ?? CreateNoteDraft();
         }
 
         private NoteDraft CreateNoteDraft()
@@ -122,12 +116,15 @@ namespace Visitz.Views.Entity.Notes
                 // by reassigning its previous value
                 return;
 
+            if (DraftRealm == null)
+                return;
+
             SetDraftInfo();
 
             int length = e.NewTextValue?.Length ?? 0;
 
             if (length > 0 && !NoteDraft.IsManaged)
-                Realm.Write(() => Realm.Add(NoteDraft));
+                DraftRealm.Write(() => DraftRealm.Add(NoteDraft));
 
             if (ContainEmojis(e))
             {
@@ -176,7 +173,7 @@ namespace Visitz.Views.Entity.Notes
 
         private void CancelTextChangedEvent(TextChangedEventArgs e)
         {
-            NoteDraft.DraftBinding = e.OldTextValue;
+            NoteDraft?.DraftBinding = e.OldTextValue;
         }
 
         partial void OnInternetAvailableChanged(bool value)
@@ -184,24 +181,24 @@ namespace Visitz.Views.Entity.Notes
             UpdateAllowPublish();
         }
 
-        private bool UpdateAllowPublish(string draftText = null)
+        private bool UpdateAllowPublish(string? draftText = null)
         {
             draftText ??= DraftOutput;
             AllowPublish = InternetAvailable && draftText?.Length > 0;
             return AllowPublish;
         }
 
-        private void Current_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
+        private void Current_ConnectivityChanged(object? sender, ConnectivityChangedEventArgs e)
         {
             InternetAvailable = NetworkHelper.InternetAvailable;
         }
 
         public async Task ResetDraftAsync()
         {
-            if (!NoteDraft.IsManaged)
+            if (NoteDraft == null || !NoteDraft.IsManaged || DraftRealm == null)
                 return;
 
-            await Realm.WriteAsync(() => Realm.Remove(NoteDraft));
+            await DraftRealm.WriteAsync(() => DraftRealm.Remove(NoteDraft));
             NoteDraft = CreateNoteDraft();
         }
     }

@@ -19,7 +19,7 @@ public abstract class TagStyleBehavior : Behavior<TagView>
         tag.BindingContextChanged -= TagView_OnBindingContextChanged;
     }
 
-    private void TagView_OnBindingContextChanged(object sender, EventArgs e)
+    private void TagView_OnBindingContextChanged(object? sender, EventArgs e)
     {
         ApplyTagStyle(sender as TagView);
     }

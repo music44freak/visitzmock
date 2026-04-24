@@ -3,14 +3,13 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Extensions.Logging;
 using Visitz.Resources.Localization;
 using VisitzModel.Extensions;
-using VisitzModel.Interfaces;
 using VisitzModel.Models.Attachments;
 
 namespace Visitz.Views.Entity.Attachments;
 
 #nullable enable
 
-internal partial class PdfDetailsViewModel : AttachmentDetailsViewModel, IBusinessObjectHolder
+public partial class PdfDetailsViewModel : AttachmentDetailsViewModel
 {
     static readonly string EmbedHtmlPath = Path.Join("PDF", "pdf-embed.html");
 

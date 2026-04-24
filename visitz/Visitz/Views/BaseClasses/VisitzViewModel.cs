@@ -1,13 +1,14 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Extensions.Logging;
 using Visitz.Extensions;
+using Visitz.Views.Entity;
 
 namespace Visitz.Views.BaseClasses
 {
     /// <summary>
     /// The base class for all the view models. Common functionality can be defined here.
     /// </summary>
-    public partial class VisitzViewModel : ObservableObject, IDisposable
+    public partial class VisitzViewModel : ObservableObject, IDisposable, IAsyncInitialize
     {
         protected virtual ILogger<VisitzViewModel> Logger { get; } =
             ServiceProvider.GetService<ILogger<VisitzViewModel>>();

@@ -8,13 +8,15 @@ using VisitzModel.Extensions;
 
 namespace VisitzModel.Models.SafetyAssess;
 
+#nullable enable
+
 public partial class ProtectiveCapacity
 {
     private const string Binding = "Binding";
 
-    partial void OnPropertyChanged(string propertyName)
+    partial void OnPropertyChanged(string? propertyName)
     {
-        if (!propertyName.EndsWith(Binding))
+        if (propertyName != null && !propertyName.EndsWith(Binding))
             RaisePropertyChanged($"{propertyName}{Binding}");
     }
 
@@ -142,13 +144,13 @@ public partial class ProtectiveCapacity
 
     public string CmtProtectiveCapacity01Binding
     {
-        get => IsValid ? CmtProtectiveCapacity01 : default;
+        get => IsValid ? CmtProtectiveCapacity01 : string.Empty;
         set => this.Commit(() => CmtProtectiveCapacity01 = value);
     }
 
     public string CmtProtectiveCapacity02Binding
     {
-        get => IsValid ? CmtProtectiveCapacity02 : default;
+        get => IsValid ? CmtProtectiveCapacity02 : string.Empty;
         set => this.Commit(() => CmtProtectiveCapacity02 = value);
     }
 }

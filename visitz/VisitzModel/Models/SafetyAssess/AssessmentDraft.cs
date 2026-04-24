@@ -6,10 +6,12 @@ using VisitzModel.Resources.Localization;
 
 namespace VisitzModel.Models.SafetyAssess;
 
+#nullable enable
+
 public partial class AssessmentDraft : IRealmObject, IDraftItem
 {
     [PrimaryKey]
-    public string DraftEntityId { get; set; }
+    public string DraftEntityId { get; set; } = Guid.NewGuid().ToString();
 
     public string RelatedEntityId
     {
@@ -22,7 +24,7 @@ public partial class AssessmentDraft : IRealmObject, IDraftItem
 
     public string Preview => GeneralStrings.SafetyAssessment;
 
-    public string DraftLocation { get; set; }
+    public string DraftLocation { get; set; } = string.Empty;
 
     int RelatedEntityTypeInt { get; set; } = (int)EntityType.Unknown;
     public EntityType RelatedEntityType
@@ -43,13 +45,13 @@ public partial class AssessmentDraft : IRealmObject, IDraftItem
     private bool? relatedEntityDownloaded;
 
     [Ignored]
-    public Realm RelatedEntityRealm { get; set; }
+    public Realm? RelatedEntityRealm { get; set; }
 
     [Ignored]
-    public IQueryable<IBusinessObject> RelatedEntitySubscriptionQuery { get; set; }
+    public IQueryable<IBusinessObject>? RelatedEntitySubscriptionQuery { get; set; }
 
     [Ignored]
-    public IDisposable RelatedEntitySubscriptionToken { get; set; }
+    public IDisposable? RelatedEntitySubscriptionToken { get; set; }
 
     /// <summary>
     /// Whether or not the related entity is available for the app to interact
@@ -156,7 +158,7 @@ public partial class AssessmentDraft : IRealmObject, IDraftItem
         GC.SuppressFinalize(this);
     }
 
-    public int CompareTo(IDraftItem other)
+    public int CompareTo(IDraftItem? other)
     {
         return this.CompareDraftItem(other);
     }

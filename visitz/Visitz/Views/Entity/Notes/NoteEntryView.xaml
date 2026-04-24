@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<baseClasses:ViewModelContentView
+<baseClasses:IcmRecordContentView
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:baseClasses="clr-namespace:Visitz.Views.BaseClasses"
@@ -12,14 +12,20 @@
     xmlns:views="clr-namespace:Visitz.Views"
     x:Class="Visitz.Views.Entity.Notes.NoteEntryView"
     x:DataType="notes:NoteEntryViewModel"
+    x:TypeArguments="notes:NoteEntryViewModel"
 >
-    <baseClasses:ViewModelContentView.Behaviors>
+    <baseClasses:IcmRecordContentView.Behaviors>
         <behaviors:SoftKbResizeBehavior />
-    </baseClasses:ViewModelContentView.Behaviors>
+    </baseClasses:IcmRecordContentView.Behaviors>
 
     <Border Background="White" Padding="-5" StrokeShape="RoundRectangle 10" StrokeThickness="0">
-        <StackLayout Orientation="Vertical" Spacing="5" Padding="20">
-            <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto" RowSpacing="5">
+        <Grid RowDefinitions="Auto,*" RowSpacing="5" Padding="20">
+            <Grid
+                Grid.Row="0"
+                ColumnDefinitions="Auto,*,Auto"
+                RowDefinitions="Auto,Auto"
+                RowSpacing="5"
+            >
                 <controls:CloseButton
                     Grid.Row="0"
                     Grid.Column="0"
@@ -61,7 +67,7 @@
                 />
             </Grid>
 
-            <AbsoluteLayout VerticalOptions="FillAndExpand">
+            <AbsoluteLayout Grid.Row="1">
                 <Editor
                     x:Name="NotesEditor"
                     AbsoluteLayout.LayoutFlags="All"
@@ -83,6 +89,6 @@
                     IsVisible="False"
                 />
             </AbsoluteLayout>
-        </StackLayout>
+        </Grid>
     </Border>
-</baseClasses:ViewModelContentView>
+</baseClasses:IcmRecordContentView>

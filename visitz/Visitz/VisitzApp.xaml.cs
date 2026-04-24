@@ -50,7 +50,7 @@ public partial class VisitzApp : Application, IRecipient<AppLockMessage>
         DebugOptions.TryStartShakeDetector(actionOnShake: async () => await DebugOptionsPage.TryOpen());
     }
 
-    private void OidcSession_SessionChanged(object sender, SessionChangedEventArgs e)
+    private void OidcSession_SessionChanged(object? sender, SessionChangedEventArgs e)
     {
         if (e is LogoutChangedEventArgs args && args.Success)
             _ = ClearIcmData();

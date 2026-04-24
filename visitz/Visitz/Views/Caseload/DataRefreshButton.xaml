@@ -9,6 +9,7 @@
     xmlns:icons="clr-namespace:Visitz.FontIcons"
     x:Class="Visitz.Views.Caseload.DataRefreshButton"
     x:DataType="caseload:DataRefreshViewModel"
+    x:TypeArguments="caseload:DataRefreshViewModel"
 >
     <baseClasses:ViewModelContentView.Resources>
         <converters:BoolNegationConverter x:Key="BoolNegation" />

@@ -8,6 +8,7 @@
     xmlns:views="clr-namespace:Visitz.Views"
     x:Class="Visitz.Views.Todo.TodoListView"
     x:DataType="todo:TodoListViewModel"
+    x:TypeArguments="todo:TodoListViewModel"
 >
     <Grid>
         <CollectionView ItemsSource="{Binding TodoItems}">

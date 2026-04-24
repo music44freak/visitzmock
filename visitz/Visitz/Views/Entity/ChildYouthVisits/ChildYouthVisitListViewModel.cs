@@ -7,15 +7,15 @@ using Visitz.Resources.Localization;
 using Visitz.Storage;
 using Visitz.Views.Banners;
 using Visitz.Views.BaseClasses;
-using VisitzModel.Interfaces;
 using VisitzModel.Models;
-using VisitzModel.Models.Caseload;
 using VisitzModel.Models.InPersonVisits;
 using VisitzModel.Models.Navigation;
 
 namespace Visitz.Views.Entity.ChildYouthVisits;
 
-internal partial class ChildYouthVisitListViewModel : VisitzViewModel, IBusinessObjectHolder, IRequestedEntitySection
+#nullable enable
+
+public partial class ChildYouthVisitListViewModel : IcmRecordViewModel, IRequestedEntitySection
 {
     private bool _disposed;
 
@@ -27,25 +27,22 @@ internal partial class ChildYouthVisitListViewModel : VisitzViewModel, IBusiness
     ObservableCollection<PersonVisit> personVisits = [];
 
     [ObservableProperty]
-    public IBusinessObject businessObject;
-
-    [ObservableProperty]
     public DateTimeOffset dateOfVisit;
 
     [ObservableProperty]
-    public string type;
+    public string type = string.Empty;
 
     [ObservableProperty]
-    public string visitDescription;
+    public string visitDescription = string.Empty;
 
     [ObservableProperty]
-    public string createdBy;
+    public string createdBy = string.Empty;
 
     [ObservableProperty]
     public AlertLevel bannerLevel;
 
     [ObservableProperty]
-    public string bannerText;
+    public string bannerText = string.Empty;
 
     [ObservableProperty]
     public bool hasVisitData = true;
@@ -54,18 +51,20 @@ internal partial class ChildYouthVisitListViewModel : VisitzViewModel, IBusiness
     public bool showEmptyIcon = false;
 
     [ObservableProperty]
-    public string openAddVisitText;
+    public string openAddVisitText = string.Empty;
 
     protected override async Task InitAsync()
     {
         await base.InitAsync();
 
-        Realm icmDataRealm = await VisitzRealms.GetIcmDataRealmAsync();
+        if (DataRealm == null)
+            return;
+
         Realm visitDraftRealm = await VisitzRealms.GetPersonVisitDraftsRealmAsync();
 
         realmQuery.ItemsChanged += RealmQuery_ItemsChanged;
 
-        realmQuery.Subscribe(icmDataRealm, PersonVisit.GetVisitsByCaseId(icmDataRealm, BusinessObject.Id));
+        realmQuery.Subscribe(DataRealm, PersonVisit.GetVisitsByCaseId(DataRealm, BusinessObject.Id));
 
         realmQuery.Subscribe(
             visitDraftRealm,
@@ -125,8 +124,8 @@ internal partial class ChildYouthVisitListViewModel : VisitzViewModel, IBusiness
     }
 
     private void RealmQuery_ItemsChanged(
-        object sender,
-        (Type Type, IRealmCollection<IRealmObject> Items, ChangeSet Changes) e
+        object? sender,
+        (Type Type, IRealmCollection<IRealmObject> Items, ChangeSet? Changes) e
     )
     {
         if (e.Type == typeof(PersonVisit))
@@ -137,12 +136,12 @@ internal partial class ChildYouthVisitListViewModel : VisitzViewModel, IBusiness
         UpdatePersonVisitRelatedInfo(PersonVisits);
     }
 
-    private void UpdateVisitsList(IRealmCollection<IRealmObject> items, ChangeSet changes)
+    private void UpdateVisitsList(IRealmCollection<IRealmObject> items, ChangeSet? changes)
     {
         if (changes == null)
         {
             foreach (var item in items)
-                PersonVisits.Add(item as PersonVisit);
+                PersonVisits.Add((PersonVisit)item);
         }
         else
         {
@@ -150,7 +149,7 @@ internal partial class ChildYouthVisitListViewModel : VisitzViewModel, IBusiness
                 PersonVisits.RemoveAt(deleted);
 
             foreach (int inserted in changes.InsertedIndices)
-                PersonVisits.Insert(inserted, items[inserted] as PersonVisit);
+                PersonVisits.Insert(inserted, (PersonVisit)items[inserted]);
         }
     }
 
@@ -160,10 +159,11 @@ internal partial class ChildYouthVisitListViewModel : VisitzViewModel, IBusiness
     }
 
     [RelayCommand]
-    public async Task OpenVisitEntry(PersonVisit personVisitObj = null)
+    public async Task OpenVisitEntry(PersonVisit? personVisitObj = null)
     {
         var visitEntryView = ServiceProvider.GetService<ChildYouthVisitView>();
-        visitEntryView.BusinessObject = BusinessObject;
+        visitEntryView.ViewModel.RowId = RowId;
+        visitEntryView.ViewModel.EntityType = EntityType;
         visitEntryView.ViewModel.PersonVisitItem = personVisitObj;
         visitEntryView.ViewModel.IsUpdatingEnabled = personVisitObj == null;
         visitEntryView.ViewModel.HideElements = personVisitObj == null;

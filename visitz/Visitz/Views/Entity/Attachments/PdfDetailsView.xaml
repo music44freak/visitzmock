@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<base:ViewModelContentView
+<base:IcmRecordContentView
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:attachments="clr-namespace:Visitz.Views.Entity.Attachments"
@@ -9,6 +9,7 @@
     xmlns:icons="clr-namespace:Visitz.FontIcons"
     x:Class="Visitz.Views.Entity.Attachments.PdfDetailsView"
     x:DataType="attachments:PdfDetailsViewModel"
+    x:TypeArguments="attachments:PdfDetailsViewModel"
     Background="White"
 >
     <Grid
@@ -89,4 +90,4 @@
             Navigated="WebView_Navigated"
         ></WebView>
     </Grid>
-</base:ViewModelContentView>
+</base:IcmRecordContentView>

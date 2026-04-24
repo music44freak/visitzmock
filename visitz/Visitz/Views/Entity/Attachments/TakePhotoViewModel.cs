@@ -5,15 +5,13 @@ using CommunityToolkit.Mvvm.Input;
 using Realms;
 using Visitz.Storage;
 using Visitz.Views.BaseClasses;
-using VisitzModel.Interfaces;
 using VisitzModel.Models;
 using VisitzModel.Models.Attachments;
-using VisitzModel.Models.Caseload;
 using VisitzModel.Storage.Filesystem;
 
 namespace Visitz.Views.Entity.Attachments;
 
-internal partial class TakePhotoViewModel(ICameraProvider cameraProvider) : VisitzViewModel, IBusinessObjectHolder
+public partial class TakePhotoViewModel(ICameraProvider cameraProvider) : IcmRecordViewModel
 {
     public static readonly string PictureFiletype = "jpg";
     public static readonly string PictureFilenamePrepend = "Pic";
@@ -23,8 +21,6 @@ internal partial class TakePhotoViewModel(ICameraProvider cameraProvider) : Visi
     readonly ObservableRealmQueryMap queryMap = new();
 
     AttachmentFiler attachmentFiler;
-
-    public IBusinessObject BusinessObject { get; set; }
 
     [ObservableProperty]
     public IReadOnlyList<CameraInfo> cameras;
@@ -46,6 +42,9 @@ internal partial class TakePhotoViewModel(ICameraProvider cameraProvider) : Visi
     protected override async Task InitAsync()
     {
         await base.InitAsync();
+
+        if (DataRealm == null)
+            return;
 
         AttachmentsRealm = await VisitzRealms.GetAttachmentDraftsRealmAsync();
         attachmentFiler = await VisitzFiles.GetAsync(BusinessObject);
@@ -115,7 +114,7 @@ internal partial class TakePhotoViewModel(ICameraProvider cameraProvider) : Visi
     }
 
     private void QueryMap_ItemsChanged(
-        object sender,
+        object? sender,
         (Type Type, IRealmCollection<IRealmObject> Items, ChangeSet Changes) e
     )
     {

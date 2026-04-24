@@ -137,7 +137,7 @@ public partial class FormEntry : ContentView
         TrailingSupportingText = $"{Text?.Length ?? 0}/{MaxLength}";
     }
 
-    private void Editor_TextChanged(object sender, TextChangedEventArgs e)
+    private void Editor_TextChanged(object? sender, TextChangedEventArgs e)
     {
         if (ContainEmojis(e))
         {
@@ -153,7 +153,7 @@ public partial class FormEntry : ContentView
         return e.NewTextValue?.ContainsUnicodeSurrogatesAndOtherSymbols() ?? false;
     }
 
-    private void CancelTextChangedEvent(object sender, TextChangedEventArgs e)
+    private void CancelTextChangedEvent(object? sender, TextChangedEventArgs e)
     {
         var textBox = sender as Editor;
         textBox.Text = e.OldTextValue;

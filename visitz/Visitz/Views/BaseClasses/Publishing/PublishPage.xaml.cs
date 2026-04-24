@@ -23,7 +23,7 @@ public partial class PublishPage : VisitzPage
         ViewModel.PropertyChanged += ViewModel_PropertyChanged;
     }
 
-    private void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    private void ViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         string name = e.PropertyName;
 
@@ -50,7 +50,7 @@ public partial class PublishPage : VisitzPage
         base.OnDestroyed();
     }
 
-    private async void PublishPage_OnCompleted(object sender, EventArgs e)
+    private async void PublishPage_OnCompleted(object? sender, EventArgs e)
     {
         await Task.WhenAll(AnimateCountdown(), Task.Delay(PublishViewModel.DismissDuration));
 
@@ -76,13 +76,13 @@ public partial class PublishPage : VisitzPage
         return false;
     }
 
-    private async void PublishStatus_Tapped(object sender, TappedEventArgs e)
+    private async void PublishStatus_Tapped(object? sender, TappedEventArgs e)
     {
         if (ViewModel.ShowPublishErrorIcon && ViewModel.PublishErrorDetail?.Length > 0)
             await this.DisplayErrorAlert(ViewModel.PublishErrorDetail);
     }
 
-    private async void RefreshStatus_Tapped(object sender, TappedEventArgs e)
+    private async void RefreshStatus_Tapped(object? sender, TappedEventArgs e)
     {
         if (ViewModel.ShowRefreshErrorIcon && ViewModel.RefreshErrorDetail?.Length > 0)
             await this.DisplayErrorAlert(ViewModel.RefreshErrorDetail);
@@ -101,7 +101,7 @@ public partial class PublishPage : VisitzPage
 #pragma warning restore SS004 // Implement Equals() and GetHashcode() methods for a type used in a collection.
     }
 
-    private async void DismissButton_Clicked(object sender, EventArgs e)
+    private async void DismissButton_Clicked(object? sender, EventArgs e)
     {
         await TryPopAsync();
     }

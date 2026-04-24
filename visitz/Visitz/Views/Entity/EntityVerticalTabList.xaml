@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:behaviors="clr-namespace:Visitz.Behaviors"
+    xmlns:effectsView="clr-namespace:Syncfusion.Maui.Toolkit.EffectsView;assembly=Syncfusion.Maui.Toolkit"
+    xmlns:entity="clr-namespace:Visitz.Views.Entity"
+    xmlns:tabView="clr-namespace:Syncfusion.Maui.Toolkit.TabView;assembly=Syncfusion.Maui.Toolkit"
+    x:Class="Visitz.Views.Entity.EntityVerticalTabList"
+    x:DataType="entity:EntityViewModel"
+>
+    <VerticalStackLayout x:Name="PopupList" HorizontalOptions="Start">
+        <VerticalStackLayout.Behaviors>
+            <behaviors:SelectionLayoutBehavior
+                ItemsSource="{Binding TabItems}"
+                SelectedItem="{Binding SelectedTab}"
+                StickySelection="True"
+            />
+        </VerticalStackLayout.Behaviors>
+
+        <BindableLayout.ItemTemplate>
+            <DataTemplate x:DataType="tabView:SfTabItem">
+                <ContentView>
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroup Name="CommonStates">
+                            <VisualState Name="Normal" />
+
+                            <VisualState Name="Selected">
+                                <VisualState.Setters>
+                                    <Setter
+                                        TargetName="SelectionIndicator"
+                                        Property="IsVisible"
+                                        Value="True"
+                                    />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateManager.VisualStateGroups>
+
+                    <effectsView:SfEffectsView TouchDownEffects="Ripple" HorizontalOptions="Fill">
+                        <HorizontalStackLayout
+                            HorizontalOptions="Fill"
+                            Margin="{StaticResource DefaultMargin}"
+                            Spacing="{StaticResource DefaultSpacingHalf}"
+                        >
+                            <Border
+                                WidthRequest="3"
+                                StrokeShape="RoundRectangle 5"
+                                StrokeThickness="0"
+                            >
+                                <BoxView
+                                    x:Name="SelectionIndicator"
+                                    Color="{StaticResource BuildBarBackgroundColor}"
+                                    IsVisible="False"
+                                ></BoxView>
+                            </Border>
+
+                            <Label Text="{Binding Header}" HorizontalOptions="Start" />
+
+                            <Image
+                                HeightRequest="{Binding ImageSize}"
+                                WidthRequest="{Binding ImageSize}"
+                                Source="{Binding ImageSource}"
+                            />
+                        </HorizontalStackLayout>
+                    </effectsView:SfEffectsView>
+                </ContentView>
+            </DataTemplate>
+        </BindableLayout.ItemTemplate>
+    </VerticalStackLayout>
+</ContentView>

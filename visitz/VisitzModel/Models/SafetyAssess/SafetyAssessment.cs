@@ -8,6 +8,8 @@ using VisitzModel.Utilities;
 
 namespace VisitzModel.Models.SafetyAssess;
 
+#nullable enable
+
 public partial class SafetyAssessment : IRealmObject, IRowMetadata, IApiJson<SubmitSafetyAssessmentJson>
 {
     static readonly string IdString = "{0}|{1}|{2}|LOCALONLY";
@@ -17,42 +19,41 @@ public partial class SafetyAssessment : IRealmObject, IRowMetadata, IApiJson<Sub
     public static readonly string DefaultOperation = "Insert";
 
     [PrimaryKey]
-    public string Id { get; set; }
+    public string Id { get; set; } = Guid.NewGuid().ToString();
 
-    public string CreatedBy { get; set; }
+    public string CreatedBy { get; set; } = string.Empty;
 
-    public string CreatedById { get; set; }
+    public string CreatedById { get; set; } = string.Empty;
 
-    public string UpdatedBy { get; set; }
+    public string UpdatedBy { get; set; } = string.Empty;
 
-    public string UpdatedById { get; set; }
+    public string UpdatedById { get; set; } = string.Empty;
 
     public DateTimeOffset CreatedDate { get; set; }
 
     public DateTimeOffset UpdatedDate { get; set; }
 
-    [Required]
-    public string IncidentNumber { get; set; }
+    public string IncidentNumber { get; set; } = string.Empty;
 
-    public string WorkerId { get; set; }
+    public string WorkerId { get; set; } = string.Empty;
 
-    public string FamilyName { get; set; }
+    public string FamilyName { get; set; } = string.Empty;
 
     public DateTimeOffset? DateOfAssessment { get; set; }
 
-    public string Operation { get; set; }
+    public string Operation { get; set; } = string.Empty;
 
-    public FactorInfluence FactorInfluence { get; set; }
+    public FactorInfluence? FactorInfluence { get; set; } = new();
 
-    public SafetyFactors SafetyFactors { get; set; }
+    public SafetyFactors? SafetyFactors { get; set; } = new();
 
-    public ProtectiveCapacity ProtectiveCapacity { get; set; }
+    public ProtectiveCapacity? ProtectiveCapacity { get; set; } = new();
 
-    public SafetyInterventions SafetyInterventions { get; set; }
+    public SafetyInterventions? SafetyInterventions { get; set; } = new();
 
-    public SafetyDecisions SafetyDecisions { get; set; }
+    public SafetyDecisions? SafetyDecisions { get; set; } = new();
 
-    public IList<string> ChildsInOutCare { get; }
+    public IList<string> ChildsInOutCare { get; } = null!;
 
     public string ApprovedBy { get; set; } = string.Empty;
 
@@ -156,7 +157,7 @@ public partial class SafetyAssessment : IRealmObject, IRowMetadata, IApiJson<Sub
         return GetOrMakeId(fileNumber, DateTimeOffset.Now.ToString(), createdBy);
     }
 
-    static string GetOrMakeId(string fileNumber, string createdDate, string createdBy, string id = null)
+    static string GetOrMakeId(string fileNumber, string createdDate, string createdBy, string? id = null)
     {
         return string.IsNullOrWhiteSpace(id) ? string.Format(IdString, fileNumber, createdDate, createdBy) : id;
     }
@@ -173,6 +174,12 @@ public partial class SafetyAssessment : IRealmObject, IRowMetadata, IApiJson<Sub
 
     public SubmitSafetyAssessmentJson ToApiJson(string dateFormat = "s")
     {
+        ArgumentNullException.ThrowIfNull(FactorInfluence);
+        ArgumentNullException.ThrowIfNull(SafetyFactors);
+        ArgumentNullException.ThrowIfNull(ProtectiveCapacity);
+        ArgumentNullException.ThrowIfNull(SafetyInterventions);
+        ArgumentNullException.ThrowIfNull(SafetyDecisions);
+
         var safetyAssessmentEntity = new SubmitSafetyAssessmentJson()
         {
             Payload =
@@ -181,7 +188,8 @@ public partial class SafetyAssessment : IRealmObject, IRowMetadata, IApiJson<Sub
                 {
                     IncidentNumber = IncidentNumber,
                     FamilyName = FamilyName,
-                    DateOfAssessment = DateOfAssessment?.ToString(DateFormat, CultureInfo.InvariantCulture),
+                    DateOfAssessment =
+                        DateOfAssessment?.ToString(DateFormat, CultureInfo.InvariantCulture) ?? string.Empty,
                 },
             ],
             FactorInfluence = [FactorInfluence.ToApiJson(dateFormat)],
@@ -197,7 +205,7 @@ public partial class SafetyAssessment : IRealmObject, IRowMetadata, IApiJson<Sub
         return safetyAssessmentEntity;
     }
 
-    public static SafetyAssessment FindByIncidentNumber(Realm realm, string incidentNumber)
+    public static SafetyAssessment? FindByIncidentNumber(Realm realm, string incidentNumber)
     {
         bool query(SafetyAssessment sa) => sa.IncidentNumber.Equals(incidentNumber);
 

@@ -7,10 +7,8 @@ namespace Visitz.Views.Drafts;
 
 #nullable enable
 
-public partial class DraftsList : ViewModelContentView
+public partial class DraftsList : ViewModelContentView<DraftsListViewModel>
 {
-    new DraftsListViewModel ViewModel => (DraftsListViewModel)base.ViewModel;
-
     public DraftsList()
         : base(ServiceProvider.GetService<DraftsListViewModel>())
     {

@@ -1,27 +1,14 @@
+using Visitz.Resources.Localization;
 using Visitz.Views.BaseClasses;
-using VisitzModel.Interfaces;
-using VisitzModel.Models.Caseload;
 
 namespace Visitz.Views.Entity.FamilyMembers;
 
 #nullable enable
 
-public partial class EntityContactsView : ViewModelContentView, IBusinessObjectHolder
+public partial class EntityContactsView : IcmRecordContentView<EntityContactsViewModel>
 {
-    new EntityContactsViewModel? ViewModel => base.ViewModel as EntityContactsViewModel;
-
-    public IBusinessObject? BusinessObject
-    {
-        get => ViewModel?.BusinessObject;
-        set
-        {
-            if (ViewModel != null)
-                ViewModel.BusinessObject = value;
-        }
-    }
-
     public EntityContactsView()
-        : base(ServiceProvider.GetService<EntityContactsViewModel>())
+        : base(ServiceProvider.GetService<EntityContactsViewModel>(), LocalizedStrings.FamilyMembers)
     {
         InitializeComponent();
         BindingContext = ViewModel;

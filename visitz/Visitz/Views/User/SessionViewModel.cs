@@ -173,7 +173,7 @@ public partial class SessionViewModel(ILogger<SessionViewModel> logger)
         return authorized;
     }
 
-    private async void OidcSession_SessionChanged(object sender, SessionChangedEventArgs e)
+    private async void OidcSession_SessionChanged(object? sender, SessionChangedEventArgs e)
     {
         SessionInfo = sender as OidcSessionInfo;
         DisplayName = SessionInfo.GivenName;

@@ -1,25 +1,35 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using Visitz.Views.BaseClasses;
-using VisitzModel.Interfaces;
 using VisitzModel.Models.Caseload;
 using VisitzModel.Models.People;
 
 namespace Visitz.Views.Entity.Details;
 
-public partial class EntityDetailsViewModel : VisitzViewModel, IBusinessObjectHolder
+#nullable enable
+
+public partial class EntityDetailsViewModel : IcmRecordViewModel
 {
     [ObservableProperty]
-    public IBusinessObject businessObject;
+    public IcmContact? keyPlayer;
 
-    [ObservableProperty]
-    public IcmContact keyPlayer;
-
-    protected override Task InitAsync()
+    protected override async Task InitAsync()
     {
-        var init = base.InitAsync();
+        await base.InitAsync();
+
+        if (DataRealm == null)
+            return;
 
         KeyPlayer = BusinessObject.GetKeyPlayer();
+    }
 
-        return init;
+    bool disposed;
+
+    protected override void Dispose(bool disposing)
+    {
+        if (!disposed && disposing)
+        {
+            disposed = true;
+        }
+        base.Dispose(disposing);
     }
 }

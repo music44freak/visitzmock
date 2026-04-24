@@ -10,6 +10,7 @@
     xmlns:views="clr-namespace:Visitz.Views"
     x:Class="Visitz.Views.Drafts.DraftsList"
     x:DataType="drafts:DraftsListViewModel"
+    x:TypeArguments="drafts:DraftsListViewModel"
 >
     <Grid RowDefinitions="Auto,*">
         <CollectionView Grid.Row="1" ItemsSource="{Binding DraftItems}">

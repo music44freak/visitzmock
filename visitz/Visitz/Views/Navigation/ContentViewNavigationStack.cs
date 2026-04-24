@@ -4,7 +4,7 @@ namespace Visitz.Views.Navigation;
 
 internal partial class ContentViewNavigationStack : ContentView
 {
-    const uint _animationLength = 300;
+    const uint _animationLength = 250;
 
     const double _minimumOpacity = 0.2d;
 

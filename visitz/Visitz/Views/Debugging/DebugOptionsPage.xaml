@@ -6,7 +6,6 @@
     x:Class="Visitz.Views.Debugging.DebugOptionsPage"
     x:DataType="debug:DebugOptionsViewModel"
     Title="Debug Options"
-    ControlTemplate="{StaticResource VisitzPageWrapper}"
 >
     <debug:DebugOptionsView />
 </ContentPage>

@@ -13,12 +13,12 @@ public partial class SoftKbResizeBehavior : Behavior<View>
         View.Unloaded += View_Unloaded;
     }
 
-    private void View_Loaded(object sender, EventArgs e)
+    private void View_Loaded(object? sender, EventArgs e)
     {
         Attach();
     }
 
-    private void View_Unloaded(object sender, EventArgs e)
+    private void View_Unloaded(object? sender, EventArgs e)
     {
         View.Loaded -= View_Loaded;
         View.Unloaded -= View_Unloaded;

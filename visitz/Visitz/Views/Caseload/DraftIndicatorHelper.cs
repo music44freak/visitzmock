@@ -59,7 +59,7 @@ public partial class DraftIndicatorHelper : ObservableObject, IDisposable
 
     private void RealmQueryMap_DraftsChanged(
         object? sender,
-        (Type Type, IRealmCollection<IRealmObject> Items, ChangeSet Changes) e
+        (Type Type, IRealmCollection<IRealmObject> Items, ChangeSet? Changes) e
     )
     {
         HashSet<(string EntityId, EntityType Type)> drafted = [];

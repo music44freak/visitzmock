@@ -4,7 +4,7 @@ namespace Visitz.Views.Navigation;
 
 #nullable enable
 
-public partial class TabView : ViewModelContentView
+public partial class TabView : ViewModelContentView<TabViewModel>
 {
     public static readonly BindableProperty TabsProperty = BindableProperty.Create(
         nameof(Tabs),
@@ -21,9 +21,6 @@ public partial class TabView : ViewModelContentView
         defaultBindingMode: BindingMode.TwoWay,
         propertyChanged: TabChanged
     );
-
-    new TabViewModel ViewModel =>
-        base.ViewModel as TabViewModel ?? throw new InvalidOperationException("ViewModel is null");
 
     internal TabViewModel PublicVm => ViewModel;
 

@@ -4,7 +4,7 @@ using Visitz.Views.Debugging;
 
 namespace Visitz.Views.Navigation;
 
-public partial class VerticalNavRailView : ViewModelContentView
+public partial class VerticalNavRailView : ViewModelContentView<NavRailViewModel>
 {
     public VerticalNavRailView()
         : base(ServiceProvider.GetService<NavRailViewModel>())

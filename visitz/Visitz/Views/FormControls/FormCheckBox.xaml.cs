@@ -44,7 +44,7 @@ public partial class FormCheckBox : ContentView
         InitializeComponent();
     }
 
-    private void TapGestureRecognizer_Tapped(object sender, TappedEventArgs e)
+    private void TapGestureRecognizer_Tapped(object? sender, TappedEventArgs e)
     {
         if (!IsReadOnly)
             IsChecked = !IsChecked;

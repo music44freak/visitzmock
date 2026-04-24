@@ -7,7 +7,7 @@ using VisitzModel.Messaging;
 
 namespace Visitz.Views.Drafts;
 
-internal partial class DraftsContainerViewModel : VisitzViewModel
+public partial class DraftsContainerViewModel : VisitzViewModel
 {
     [ObservableProperty]
     public bool showMenuButton;

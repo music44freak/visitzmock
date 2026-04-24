@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<baseClasses:ViewModelContentView
+<baseClasses:IcmRecordContentView
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:banners="clr-namespace:Visitz.Views.Banners"
@@ -10,16 +10,13 @@
     xmlns:nav="clr-namespace:Visitz.Views.Navigation"
     x:Class="Visitz.Views.Entity.Attachments.AttachmentsView"
     x:DataType="attachments:AttachmentsViewModel"
+    x:TypeArguments="attachments:AttachmentsViewModel"
 >
-    <Grid
-        HorizontalOptions="FillAndExpand"
-        VerticalOptions="FillAndExpand"
-        RowDefinitions="Auto, 0.5, *, 0.5, Auto"
-    >
+    <Grid RowDefinitions="Auto, 0.5, *, 0.5, Auto">
         <nav:TabView
             x:Name="AttachmentsTabs"
             Grid.Row="0"
-            HorizontalOptions="FillAndExpand"
+            HorizontalOptions="Fill"
             Padding="{Thickness
                 Left={StaticResource DefaultPadding},
                 Right={StaticResource DefaultPadding}}"
@@ -29,8 +26,8 @@
 
         <ContentView
             x:Name="TabDisplayView"
-            HorizontalOptions="FillAndExpand"
-            VerticalOptions="FillAndExpand"
+            HorizontalOptions="Fill"
+            VerticalOptions="Fill"
             Grid.Row="2"
         />
 
@@ -77,4 +74,4 @@
             </Button>
         </Grid>
     </Grid>
-</baseClasses:ViewModelContentView>
+</baseClasses:IcmRecordContentView>

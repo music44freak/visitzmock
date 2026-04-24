@@ -5,6 +5,8 @@ using VisitzModel.Interfaces;
 
 namespace VisitzModel.Models.SafetyAssess;
 
+#nullable enable
+
 public partial class FactorInfluence : IRealmObject, IApiJson<SubmitFactorInfluenceJson>
 {
     public bool AgeUptoFive { get; set; }

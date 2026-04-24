@@ -1,31 +1,14 @@
 using System.Windows.Input;
-using Visitz.VisualStates;
 
 namespace Visitz.Views.Navigation;
 
-public partial class NavDrawerItemView : ContentView, ISelectedState
+public partial class NavDrawerItemView : ContentView
 {
-    public static readonly BindableProperty IsSelectedProperty = BindableProperty.Create(
-        nameof(IsSelected),
-        typeof(bool),
-        typeof(NavDrawerItemView)
-    );
-
     public static readonly BindableProperty TappedCommandProperty = BindableProperty.Create(
         nameof(TappedCommand),
         typeof(ICommand),
         typeof(NavDrawerItemView)
     );
-
-    public bool IsSelected
-    {
-        get => (bool)GetValue(IsSelectedProperty);
-        set
-        {
-            SetValue(IsSelectedProperty, value);
-            VisualStateManager.GoToState(this, (this as ISelectedState).GetSelectedState());
-        }
-    }
 
     public ICommand TappedCommand
     {
@@ -38,7 +21,7 @@ public partial class NavDrawerItemView : ContentView, ISelectedState
         InitializeComponent();
     }
 
-    private void SfEffectsView_TouchUp(object sender, EventArgs e)
+    private void SfEffectsView_TouchUp(object? sender, EventArgs e)
     {
         TappedCommand?.Execute(null);
     }

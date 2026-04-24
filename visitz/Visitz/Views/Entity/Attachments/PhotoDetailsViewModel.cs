@@ -5,7 +5,7 @@ using VisitzModel.Models.Attachments;
 
 namespace Visitz.Views.Entity.Attachments;
 
-internal partial class PhotoDetailsViewModel : AttachmentDetailsViewModel, IBusinessObjectHolder
+public partial class PhotoDetailsViewModel : AttachmentDetailsViewModel, IBusinessObjectHolder
 {
     [ObservableProperty]
     public ImageSource detailImage;

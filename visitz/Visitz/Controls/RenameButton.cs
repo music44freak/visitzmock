@@ -27,7 +27,7 @@ internal class RenameButton : FontIconButton
         Clicked += RenameButton_Clicked;
     }
 
-    private async void RenameButton_Clicked(object sender, EventArgs e)
+    private async void RenameButton_Clicked(object? sender, EventArgs e)
     {
         string newName = await Navigator.CurrentOpenPage.DisplayPromptAsync(
             LocalizedStrings.Rename,

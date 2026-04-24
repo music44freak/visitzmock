@@ -176,7 +176,7 @@ public partial class NavRailViewModel : VisitzViewModel
         await Navigator.Navigation.PushModalAsync(userView);
     }
 
-    private void RealmCount_CountChanged(object sender, (Type Kind, int Count) e)
+    private void RealmCount_CountChanged(object? sender, (Type Kind, int Count) e)
     {
         DraftsNavItem.BadgeCount = (sender as ObservableRealmCount).Total;
     }

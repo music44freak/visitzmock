@@ -24,7 +24,7 @@ internal class AvatarSessionBehavior : Behavior<AvatarView>
         base.OnDetachingFrom(bindable);
     }
 
-    private async void VisitzSession_SessionChanged(object sender, SessionChangedEventArgs e)
+    private async void VisitzSession_SessionChanged(object? sender, SessionChangedEventArgs e)
     {
         await SetInitials();
     }

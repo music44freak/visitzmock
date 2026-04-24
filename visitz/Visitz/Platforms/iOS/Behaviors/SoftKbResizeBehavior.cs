@@ -25,7 +25,7 @@ public partial class SoftKbResizeBehavior
         ObserveWillChangeFrameToken.Dispose();
     }
 
-    void OnKeyboardWillChangeFrame(object sender, UIKeyboardEventArgs e)
+    void OnKeyboardWillChangeFrame(object? sender, UIKeyboardEventArgs e)
     {
         var intersection = CGRect.Intersect(UIView.Frame, e.FrameEnd);
 

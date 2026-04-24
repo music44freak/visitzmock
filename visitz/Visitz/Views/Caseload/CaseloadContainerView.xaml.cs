@@ -1,10 +1,9 @@
 using CommunityToolkit.Mvvm.Messaging;
+using Visitz.Extensions;
 using Visitz.Views.BaseClasses;
-using Visitz.Views.Entity.Navigation;
+using Visitz.Views.Entity;
 using VisitzModel.Messaging;
 using VisitzModel.Models.Caseload;
-using VisitzModel.Models.Drafts;
-using VisitzModel.Models.Navigation;
 
 namespace Visitz.Views.Caseload;
 
@@ -62,12 +61,20 @@ public partial class CaseloadContainerView : BaseContentView
     private async Task OpenBusinessObject(BusinessObjectSelectedMessage message)
     {
         IBusinessObject item = message.Value;
-        EntitySection section = message.Section;
-        IDraftItem draftItem = message.DraftItem;
+        var entityView = ServiceProvider.GetService<EntityView>();
 
-        var entityNav = ServiceProvider.GetService<EntityNavView>();
-        entityNav.BusinessObject = item;
-        entityNav.SetRequestedSection(section, draftItem);
-        await ContentStack.PushAsync(entityNav);
+        entityView.RowId = item.Id;
+        entityView.EntityType = item.EntityType;
+        entityView.ViewModel.RequestedSection = message.Section;
+        entityView.ViewModel.FocusedDraftItem = message.DraftItem;
+
+        try
+        {
+            await ContentStack.PushAsync(entityView);
+        }
+        catch (Exception ex)
+        {
+            await Navigator.CurrentOpenPage.DisplayErrorAlert(ex);
+        }
     }
 }

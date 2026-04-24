@@ -7,36 +7,33 @@ using Visitz.Extensions;
 using Visitz.Resources.Localization;
 using Visitz.Storage;
 using Visitz.Views.BaseClasses;
-using VisitzModel.Interfaces;
 using VisitzModel.Models;
-using VisitzModel.Models.Caseload;
 using VisitzModel.Models.Navigation;
 using VisitzModel.Models.Notes;
 
 namespace Visitz.Views.Entity.Notes;
 
-public partial class EntityNotesViewModel : VisitzViewModel, IBusinessObjectHolder, IRequestedEntitySection
+#nullable enable
+
+public partial class EntityNotesViewModel : IcmRecordViewModel, IRequestedEntitySection
 {
     [ObservableProperty]
-    public IBusinessObject businessObject;
-
-    [ObservableProperty]
-    public ObservableCollection<NoteItemGroup> notes;
+    public ObservableCollection<NoteItemGroup> notes = [];
 
     [ObservableProperty]
     public bool isNotesEmtpy;
 
     private readonly ObservableRealmQueryMap realmQueryMap = new();
 
-    public NoteItemGroup LastNoteItemGroup => Notes?.LastOrDefault();
+    public NoteItemGroup? LastNoteItemGroup => Notes.LastOrDefault();
 
-    public NoteItem LastNoteItem => LastNoteItemGroup?.LastOrDefault();
+    public NoteItem? LastNoteItem => LastNoteItemGroup?.LastOrDefault();
 
     [ObservableProperty]
     public EntitySection requestedSection;
 
     [ObservableProperty]
-    public string openNoteEntryText;
+    public string openNoteEntryText = "";
 
     public readonly TaskCompletionSource notesLoadedTcs = new();
 
@@ -44,10 +41,11 @@ public partial class EntityNotesViewModel : VisitzViewModel, IBusinessObjectHold
     {
         await base.InitAsync();
 
-        var realm = await VisitzRealms.GetIcmDataRealmAsync();
+        if (DataRealm == null)
+            return;
 
         realmQueryMap.ItemsChanged += RealmQueryMap_ItemsChanged;
-        realmQueryMap.Subscribe(realm, NoteItem.GetNotesByFileNumber(realm, BusinessObject.FileNumber));
+        realmQueryMap.Subscribe(DataRealm, NoteItem.GetNotesByFileNumber(DataRealm, BusinessObject.FileNumber));
 
         var noteDraftRealm = await VisitzRealms.GetNoteDraftsRealmAsync();
 
@@ -66,9 +64,8 @@ public partial class EntityNotesViewModel : VisitzViewModel, IBusinessObjectHold
     {
         if (!disposed && disposing)
         {
-            if (Notes != null)
-                Notes.CollectionChanged -= Notes_CollectionChanged;
-            Notes = null;
+            Notes.CollectionChanged -= Notes_CollectionChanged;
+            Notes.Clear();
 
             realmQueryMap.Dispose();
 
@@ -80,32 +77,34 @@ public partial class EntityNotesViewModel : VisitzViewModel, IBusinessObjectHold
 
     private void InitNotesCollection(List<NoteItemGroup> items)
     {
-        if (Notes != null)
-            Notes.CollectionChanged -= Notes_CollectionChanged;
+        Notes.CollectionChanged -= Notes_CollectionChanged;
 
-        Notes = new ObservableCollection<NoteItemGroup>(items);
+        Notes.Clear();
+        foreach (var item in items)
+            Notes.Add(item);
+
         Notes.CollectionChanged += Notes_CollectionChanged;
 
         IsNotesEmtpy = items.Count == 0;
     }
 
-    private void Notes_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    private void Notes_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         IsNotesEmtpy = !Notes?.Any() ?? true;
     }
 
     private void RealmQueryMap_ItemsChanged(
-        object sender,
-        (Type Type, IRealmCollection<IRealmObject> Items, ChangeSet Changes) e
+        object? sender,
+        (Type Type, IRealmCollection<IRealmObject> Items, ChangeSet? Changes) e
     )
     {
         if (e.Type == typeof(NoteItem))
-            UpdateNotesList(e.Items as IRealmCollection<NoteItem>, e.Changes);
+            UpdateNotesList((IRealmCollection<NoteItem>)e.Items, e.Changes);
         else if (e.Type == typeof(NoteDraft))
             UpdateOpenNoteEntryText(e.Items.Any());
     }
 
-    private void UpdateNotesList(IRealmCollection<NoteItem> realmNotes, ChangeSet changes)
+    private void UpdateNotesList(IRealmCollection<NoteItem> realmNotes, ChangeSet? changes)
     {
         if (changes == null)
         {

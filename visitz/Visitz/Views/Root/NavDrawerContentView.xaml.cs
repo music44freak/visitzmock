@@ -2,10 +2,8 @@ using Visitz.Views.BaseClasses;
 
 namespace Visitz.Views.Root;
 
-public partial class NavDrawerContentView : ViewModelContentView
+public partial class NavDrawerContentView : ViewModelContentView<NavDrawerContentViewModel>
 {
-    new NavDrawerContentViewModel ViewModel => base.ViewModel as NavDrawerContentViewModel;
-
     public NavDrawerContentView()
         : base(ServiceProvider.GetService<NavDrawerContentViewModel>())
     {

@@ -8,7 +8,7 @@ using VisitzModel.Models.Navigation;
 
 namespace Visitz.Views.Root;
 
-internal partial class NavDrawerContentViewModel : VisitzViewModel
+public partial class NavDrawerContentViewModel : VisitzViewModel
 {
     [ObservableProperty]
     public NavRailViewModel navRailViewModel = ServiceProvider.GetService<NavRailViewModel>();

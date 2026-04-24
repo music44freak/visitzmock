@@ -10,6 +10,7 @@
     xmlns:views="clr-namespace:Visitz.Views"
     x:Class="Visitz.Views.Drafts.DraftsContainerView"
     x:DataType="drafts:DraftsContainerViewModel"
+    x:TypeArguments="drafts:DraftsContainerViewModel"
     BackgroundColor="{StaticResource Default_Background}"
 >
     <Grid RowDefinitions="Auto, *">

@@ -6,6 +6,7 @@
     xmlns:debug="clr-namespace:Visitz.Views.Debugging"
     x:Class="Visitz.Views.Debugging.DebugOptionsView"
     x:DataType="debug:DebugOptionsViewModel"
+    x:TypeArguments="debug:DebugOptionsViewModel"
     BackgroundColor="White"
 >
     <baseClasses:ViewModelContentView.Resources>

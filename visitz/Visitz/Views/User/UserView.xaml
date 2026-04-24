@@ -9,9 +9,10 @@
     xmlns:views="clr-namespace:Visitz.Views"
     x:Class="Visitz.Views.User.UserView"
     x:DataType="user:UserViewModel"
+    x:TypeArguments="user:UserViewModel"
     BackgroundColor="Black"
 >
-    <AbsoluteLayout IgnoreSafeArea="True">
+    <AbsoluteLayout SafeAreaEdges="None">
         <views:FeaturedBackgroundUnderlay
             AbsoluteLayout.LayoutFlags="All"
             AbsoluteLayout.LayoutBounds="0,0,1,1"
@@ -56,7 +57,7 @@
         </Label>
 
         <HorizontalStackLayout
-            IgnoreSafeArea="False"
+            SafeAreaEdges="All"
             AbsoluteLayout.LayoutFlags="PositionProportional"
             AbsoluteLayout.LayoutBounds="0.5,1"
             Spacing="30"

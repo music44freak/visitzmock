@@ -4,7 +4,7 @@ using Visitz.Views.BaseClasses;
 
 namespace Visitz.Views.Debugging;
 
-public partial class DebugOptionsView : ViewModelContentView
+public partial class DebugOptionsView : ViewModelContentView<DebugOptionsViewModel>
 {
     public DebugOptionsView()
         : base(ServiceProvider.GetService<DebugOptionsViewModel>())
@@ -13,7 +13,7 @@ public partial class DebugOptionsView : ViewModelContentView
         BindingContext = ViewModel;
     }
 
-    private async void ShowDocumentsButton_Clicked(object sender, EventArgs e)
+    private async void ShowDocumentsButton_Clicked(object? sender, EventArgs e)
     {
         var popup = new Popup()
         {

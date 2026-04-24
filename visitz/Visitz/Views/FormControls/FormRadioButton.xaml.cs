@@ -72,12 +72,12 @@ public partial class FormRadioButton : ContentView
         RadioButton.CheckedChanged += RadioButton_CheckedChanged;
     }
 
-    private void RadioButton_CheckedChanged(object sender, CheckedChangedEventArgs e)
+    private void RadioButton_CheckedChanged(object? sender, CheckedChangedEventArgs e)
     {
         CheckedChanged?.Invoke(this, e);
     }
 
-    private void TapGestureRecognizer_Tapped(object sender, TappedEventArgs e)
+    private void TapGestureRecognizer_Tapped(object? sender, TappedEventArgs e)
     {
         if (!IsReadOnly)
             IsChecked = true;

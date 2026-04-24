@@ -2,10 +2,8 @@ using Visitz.Views.BaseClasses;
 
 namespace Visitz.Views.Snackbar;
 
-public partial class VisitzSnackbar : ViewModelContentView
+public partial class VisitzSnackbar : ViewModelContentView<VisitzSnackbarViewModel>
 {
-    new VisitzSnackbarViewModel ViewModel => base.ViewModel as VisitzSnackbarViewModel;
-
     public string Message
     {
         get => ViewModel.Message;

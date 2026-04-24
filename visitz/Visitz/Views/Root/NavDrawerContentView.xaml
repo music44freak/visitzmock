@@ -10,6 +10,7 @@
     xmlns:views="clr-namespace:Visitz.Views"
     x:Class="Visitz.Views.Root.NavDrawerContentView"
     x:DataType="root:NavDrawerContentViewModel"
+    x:TypeArguments="root:NavDrawerContentViewModel"
 >
     <Grid RowDefinitions="*, Auto">
         <views:FeaturedBackgroundUnderlay Grid.RowSpan="3" ImageDisplayOptions="TextReadable" />

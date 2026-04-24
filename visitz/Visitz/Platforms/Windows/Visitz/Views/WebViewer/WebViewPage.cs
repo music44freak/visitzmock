@@ -50,7 +50,7 @@ public partial class WebViewPage
         return winWebView.CoreWebView2;
     }
 
-    private async void MainWebView_Loaded(object sender, EventArgs e)
+    private async void MainWebView_Loaded(object? sender, EventArgs e)
     {
         var webView = sender as WebView;
         var coreWebView = await GetCoreWebView(webView);
@@ -143,7 +143,7 @@ public partial class WebViewPage
         await OidcSession.LocalLogoutAsync();
     }
 
-    private void CloseButton_Closing(object sender, ClosingEventArgs e)
+    private void CloseButton_Closing(object? sender, ClosingEventArgs e)
     {
         CancelTokenSource?.Cancel();
     }

@@ -9,10 +9,10 @@
     xmlns:icons="clr-namespace:Visitz.FontIcons"
     xmlns:views="clr-namespace:Visitz.Views"
     xmlns:nav="clr-namespace:Visitz.Views.Navigation"
-    xmlns:selView="clr-namespace:Visitz.Views.SelectionView"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:Class="Visitz.Views.Navigation.HorizontalNavRailView"
     x:DataType="nav:NavRailViewModel"
+    x:TypeArguments="nav:NavRailViewModel"
     BackgroundColor="{StaticResource BuildBarBackgroundColor}"
     MinimumHeightRequest="64"
 >

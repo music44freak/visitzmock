@@ -2,26 +2,16 @@ using CommunityToolkit.Mvvm.Messaging;
 using Visitz.Services;
 using Visitz.Services.Attachments;
 using Visitz.Views.BaseClasses;
-using VisitzModel.Interfaces;
 using VisitzModel.Models.Attachments;
-using VisitzModel.Models.Caseload;
 
 namespace Visitz.Views.Entity.Attachments;
 
-public partial class PhotoDetailsView : ViewModelContentView, IBusinessObjectHolder, IRecipient<ServiceStateMessage>
+public partial class PhotoDetailsView : IcmRecordContentView<PhotoDetailsViewModel>, IRecipient<ServiceStateMessage>
 {
-    new PhotoDetailsViewModel ViewModel => base.ViewModel as PhotoDetailsViewModel;
-
     public Attachment Attachment
     {
         get => ViewModel.Attachment;
         set => ViewModel.Attachment = value;
-    }
-
-    public IBusinessObject BusinessObject
-    {
-        get => ViewModel.BusinessObject;
-        set => ViewModel.BusinessObject = value;
     }
 
     public bool IsDownloadedAttachment
@@ -77,7 +67,7 @@ public partial class PhotoDetailsView : ViewModelContentView, IBusinessObjectHol
         }
     }
 
-    private void CloseButton_Closing(object sender, Controls.ClosingEventArgs e)
+    private void CloseButton_Closing(object? sender, Controls.ClosingEventArgs e)
     {
         Unregister();
     }

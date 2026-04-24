@@ -1,5 +1,7 @@
 namespace Visitz.Views.SegmentedButtons;
 
+#nullable enable
+
 public class SegmentedOptions(string id, string text, ImageSource imageSource)
 {
     public string Id { get; } = id;
@@ -8,7 +10,7 @@ public class SegmentedOptions(string id, string text, ImageSource imageSource)
 
     public ImageSource ImageSource { get; } = imageSource;
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         return obj is SegmentedOptions opts
             && Id == opts.Id
@@ -21,17 +23,17 @@ public class SegmentedOptions(string id, string text, ImageSource imageSource)
         return HashCode.Combine(Id, Text, ImageSource);
     }
 
-    public static bool operator ==(SegmentedOptions a, SegmentedOptions b)
+    public static bool operator ==(SegmentedOptions? a, SegmentedOptions? b)
     {
         if (a is null && b is null)
             return true;
         else if (a is null ^ b is null)
             return false;
         else
-            return a.Equals(b);
+            return a?.Equals(b) ?? false;
     }
 
-    public static bool operator !=(SegmentedOptions a, SegmentedOptions b)
+    public static bool operator !=(SegmentedOptions? a, SegmentedOptions? b)
     {
         return !(a == b);
     }

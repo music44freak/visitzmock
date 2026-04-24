@@ -7,22 +7,13 @@ using Visitz.Extensions;
 using Visitz.Resources.Localization;
 using Visitz.Views.BaseClasses;
 using Visitz.Views.Snackbar;
-using VisitzModel.Interfaces;
 using VisitzModel.Models.Caseload;
 
 namespace Visitz.Views.Entity.Attachments;
 
-public partial class TakePhotoView : ViewModelContentView, IBusinessObjectHolder
+public partial class TakePhotoView : IcmRecordContentView<TakePhotoViewModel>
 {
     readonly VisibilityAnimation SnapshotFade = new(showView: false);
-
-    new TakePhotoViewModel ViewModel => base.ViewModel as TakePhotoViewModel;
-
-    public IBusinessObject BusinessObject
-    {
-        get => ViewModel.BusinessObject;
-        set => ViewModel.BusinessObject = value;
-    }
 
     public TakePhotoView()
         : base(ServiceProvider.GetService<TakePhotoViewModel>())
@@ -63,7 +54,7 @@ public partial class TakePhotoView : ViewModelContentView, IBusinessObjectHolder
         base.Dispose(disposing);
     }
 
-    private void TakePhotoView_Unloaded(object sender, EventArgs e)
+    private void TakePhotoView_Unloaded(object? sender, EventArgs e)
     {
         Dispose();
     }
@@ -75,7 +66,7 @@ public partial class TakePhotoView : ViewModelContentView, IBusinessObjectHolder
         await SnapshotFade.Animate(SnapshotLayer, CancellationToken.None);
     }
 
-    private async void Camera_MediaCaptured(object sender, MediaCapturedEventArgs e)
+    private async void Camera_MediaCaptured(object? sender, MediaCapturedEventArgs e)
     {
         try
         {
@@ -88,14 +79,14 @@ public partial class TakePhotoView : ViewModelContentView, IBusinessObjectHolder
         }
     }
 
-    private void Camera_MediaCaptureFailed(object sender, MediaCaptureFailedEventArgs e)
+    private void Camera_MediaCaptureFailed(object? sender, MediaCaptureFailedEventArgs e)
     {
         Logger.LogError($"{nameof(Camera_MediaCaptureFailed)} " + e.FailureReason);
         // TODO: Show error when info is added to MediaCaptureFailedEventArgs
         // await Navigator.CurrentOpenPage.DisplayErrorAlert(e...);
     }
 
-    private async void CameraRollButton_Clicked(object sender, EventArgs e)
+    private async void CameraRollButton_Clicked(object? sender, EventArgs e)
     {
         await Navigator.Navigation.PopModalAsync();
     }

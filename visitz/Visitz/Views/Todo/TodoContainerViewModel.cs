@@ -7,7 +7,7 @@ using VisitzModel.Messaging;
 
 namespace Visitz.Views.Todo;
 
-internal partial class TodoContainerViewModel : VisitzViewModel
+public partial class TodoContainerViewModel : VisitzViewModel
 {
     [ObservableProperty]
     public bool showMenuButton;

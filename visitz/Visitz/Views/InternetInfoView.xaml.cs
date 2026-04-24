@@ -79,7 +79,7 @@ public partial class InternetInfoView : ContentView
             Connectivity.Current.ConnectivityChanged -= Current_ConnectivityChanged;
     }
 
-    private void Current_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
+    private void Current_ConnectivityChanged(object? sender, ConnectivityChangedEventArgs e)
     {
         ApplyConnectivityStyles();
     }

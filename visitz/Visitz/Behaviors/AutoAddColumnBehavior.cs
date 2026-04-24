@@ -16,7 +16,7 @@ public partial class AutoAddColumnBehavior : Behavior<Grid>
         base.OnDetachingFrom(grid);
     }
 
-    private void Bindable_ChildAdded(object sender, ElementEventArgs e)
+    private void Bindable_ChildAdded(object? sender, ElementEventArgs e)
     {
         Grid grid = (Grid)sender;
 

@@ -1,13 +1,14 @@
 using System.ComponentModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
 using Oidc.Network;
 using Realms;
+using Visitz.Extensions;
 using Visitz.Storage;
 using Visitz.Views.BaseClasses;
 using Visitz.Views.BaseClasses.Publishing;
 using VisitzModel.Extensions;
-using VisitzModel.Interfaces;
 using VisitzModel.Models.Caseload;
 using VisitzModel.Models.Drafts;
 using VisitzModel.Models.InPersonVisits;
@@ -15,7 +16,9 @@ using VisitzModel.Resources.Localization;
 
 namespace Visitz.Views.Entity.ChildYouthVisits;
 
-public partial class ChildYouthVisitViewModel : VisitzViewModel, IBusinessObjectHolder
+#nullable enable
+
+public partial class ChildYouthVisitViewModel : IcmRecordViewModel
 {
     public static readonly string VisitTypeGroup = "VisitTypeGroup";
     public static readonly string VisitDetailGroup = "VisitDetailGroup";
@@ -24,22 +27,18 @@ public partial class ChildYouthVisitViewModel : VisitzViewModel, IBusinessObject
 
     private bool _disposed;
 
-    Realm Realm { get; set; }
+    Realm? DraftRealm { get; set; }
 
-    Realm DraftRealm { get; set; }
-
-    CaseRecord Case { get; set; }
+    CaseRecord? Case { get; set; }
 
     [ObservableProperty]
-    PersonVisitDraft draft;
-
-    public IBusinessObject BusinessObject { get; set; }
+    PersonVisitDraft? draft;
 
     [ObservableProperty]
     public DateTime maxDate = DateTimeExtensions.LocalNow;
 
     [ObservableProperty]
-    public string visitDescription;
+    public string visitDescription = "";
 
     [ObservableProperty]
     public DateTimeOffset dateOfVisit;
@@ -63,7 +62,7 @@ public partial class ChildYouthVisitViewModel : VisitzViewModel, IBusinessObject
     public int characterCount;
 
     [ObservableProperty]
-    public PersonVisit personVisitItem;
+    public PersonVisit? personVisitItem;
 
     [ObservableProperty]
     public bool showFullForm = true;
@@ -74,18 +73,28 @@ public partial class ChildYouthVisitViewModel : VisitzViewModel, IBusinessObject
     public DraftSaveStateHandler SaveStateHandler { get; } = new();
 
     [ObservableProperty]
-    public List<VisitDetailListItem> detailItems;
+    public List<VisitDetailListItem> detailItems = [];
 
     protected override async Task InitAsync()
     {
         await base.InitAsync();
 
-        Realm = await VisitzRealms.GetIcmDataRealmAsync();
+        if (DataRealm == null)
+            return;
+
         DraftRealm = await VisitzRealms.GetPersonVisitDraftsRealmAsync();
-        Case = Realm.All<CaseRecord>().Where(@case => @case.FileNumber == BusinessObject.FileNumber).First();
+        Case = DataRealm.All<CaseRecord>().Where(@case => @case.FileNumber == BusinessObject.FileNumber).First();
 
         if (PersonVisitItem == null && IsUpdatingEnabled)
             Draft = PersonVisitDraft.GetDraft(DraftRealm, Case.Id) ?? new(Case);
+
+        if (PersonVisitItem == null)
+        {
+            string error = "Unable to load visit record";
+            Logger.LogError(error);
+            await Navigator.CurrentOpenPage.DisplayErrorAlert(error);
+            return;
+        }
 
         DetailItems =
         [
@@ -114,6 +123,9 @@ public partial class ChildYouthVisitViewModel : VisitzViewModel, IBusinessObject
 
     void AddOtherVisitDetails()
     {
+        if (PersonVisitItem == null)
+            return;
+
         var knownDetails = DetailItems.Select(item => item.DetailValue).ToList();
         var otherDetails = PersonVisitItem.VisitDetails.Except(knownDetails);
 
@@ -135,16 +147,13 @@ public partial class ChildYouthVisitViewModel : VisitzViewModel, IBusinessObject
             DraftRealm?.Dispose();
             DraftRealm = null;
 
-            Realm?.Dispose();
-            Realm = null;
-
             _disposed = true;
         }
 
         base.Dispose(disposing);
     }
 
-    partial void OnPersonVisitItemChanged(PersonVisit oldValue, PersonVisit newValue)
+    partial void OnPersonVisitItemChanged(PersonVisit? oldValue, PersonVisit? newValue)
     {
         if (oldValue != null)
             oldValue.PropertyChanged -= PersonVisitItem_PropertyChanged;
@@ -156,7 +165,7 @@ public partial class ChildYouthVisitViewModel : VisitzViewModel, IBusinessObject
         }
     }
 
-    private async void PersonVisitItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    private async void PersonVisitItem_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (!IsUpdatingEnabled)
             return;
@@ -186,10 +195,11 @@ public partial class ChildYouthVisitViewModel : VisitzViewModel, IBusinessObject
 
     public void DiscardDraft()
     {
-        string id = Draft.RelatedEntityId;
+        string? id = Draft?.RelatedEntityId;
         Draft = null;
 
-        DraftRealm.Write(() => DraftRealm.DeleteByIds<PersonVisitDraft>([id]));
+        if (id != null)
+            DraftRealm?.Write(() => DraftRealm.DeleteByIds<PersonVisitDraft>([id]));
     }
 
     private void UpdateAllowPublish()
@@ -201,7 +211,7 @@ public partial class ChildYouthVisitViewModel : VisitzViewModel, IBusinessObject
             && CharacterCount <= CharacterLimit;
     }
 
-    TaskCompletionSource DraftInitTcs;
+    TaskCompletionSource? DraftInitTcs;
 
     private async Task HandleDraft()
     {
@@ -211,7 +221,7 @@ public partial class ChildYouthVisitViewModel : VisitzViewModel, IBusinessObject
         if (DraftInitTcs != null)
             await DraftInitTcs.Task;
 
-        if (!PersonVisitItem.IsManaged)
+        if (PersonVisitItem != null && !PersonVisitItem.IsManaged && BusinessObject != null && Case != null)
         {
             DraftInitTcs = new();
 
@@ -231,7 +241,7 @@ public partial class ChildYouthVisitViewModel : VisitzViewModel, IBusinessObject
         UpdateAllowPublish();
     }
 
-    partial void OnDraftChanged(PersonVisitDraft value)
+    partial void OnDraftChanged(PersonVisitDraft? value)
     {
         PersonVisitItem = value?.Visit;
         AllowDiscard = value?.IsManaged ?? false;
@@ -242,7 +252,7 @@ public partial class ChildYouthVisitViewModel : VisitzViewModel, IBusinessObject
         DetailsRowHeight = value ? GridLength.Star : 0;
     }
 
-    private void Current_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
+    private void Current_ConnectivityChanged(object? sender, ConnectivityChangedEventArgs e)
     {
         UpdateAllowPublish();
     }

@@ -139,7 +139,7 @@ public partial class FormPromptAnswerField : ContentView
         InitializeComponent();
     }
 
-    private void RadioButton_CheckedChanged(object sender, CheckedChangedEventArgs e)
+    private void RadioButton_CheckedChanged(object? sender, CheckedChangedEventArgs e)
     {
         var rb = (RadioButton)sender;
 

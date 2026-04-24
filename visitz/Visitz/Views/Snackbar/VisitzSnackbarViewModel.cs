@@ -4,7 +4,7 @@ using Visitz.Views.BaseClasses;
 
 namespace Visitz.Views.Snackbar;
 
-internal partial class VisitzSnackbarViewModel : VisitzViewModel
+public partial class VisitzSnackbarViewModel : VisitzViewModel
 {
     [ObservableProperty]
     public string message;

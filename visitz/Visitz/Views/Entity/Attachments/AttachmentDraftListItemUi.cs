@@ -6,7 +6,7 @@ namespace Visitz.Views.Entity.Attachments;
 
 #nullable enable
 
-internal partial class AttachmentDraftListItemUi : ObservableObject
+public partial class AttachmentDraftListItemUi : ObservableObject
 {
     [ObservableProperty]
     public Attachment attachment;

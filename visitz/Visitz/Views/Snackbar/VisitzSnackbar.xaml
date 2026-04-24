@@ -6,6 +6,7 @@
     xmlns:snackbar="clr-namespace:Visitz.Views.Snackbar"
     x:Class="Visitz.Views.Snackbar.VisitzSnackbar"
     x:DataType="snackbar:VisitzSnackbarViewModel"
+    x:TypeArguments="snackbar:VisitzSnackbarViewModel"
     BackgroundColor="Transparent"
 >
     <Border

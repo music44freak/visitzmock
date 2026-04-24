@@ -8,12 +8,17 @@ using VisitzModel.Extensions;
 
 namespace VisitzModel.Models.SafetyAssess;
 
+#nullable enable
+
 public partial class SafetyFactors
 {
     private const string Binding = "Binding";
 
-    partial void OnPropertyChanged(string propertyName)
+    partial void OnPropertyChanged(string? propertyName)
     {
+        if (propertyName == null)
+            return;
+
         bool notBound = !propertyName.EndsWith(Binding);
 
         if (notBound)
@@ -30,7 +35,7 @@ public partial class SafetyFactors
 
     private bool IsQuestionPrompt(string propertyName)
     {
-        return GetType().GetProperty(propertyName).PropertyType == typeof(bool?);
+        return GetType().GetProperty(propertyName)?.PropertyType == typeof(bool?);
     }
 
     public bool? PhysicalHarmBinding
@@ -71,7 +76,7 @@ public partial class SafetyFactors
 
     public string CmtClarificationBinding
     {
-        get => IsValid ? CmtClarification : default;
+        get => IsValid ? CmtClarification : string.Empty;
         set => this.Commit(() => CmtClarification = value);
     }
 
@@ -83,7 +88,7 @@ public partial class SafetyFactors
 
     public string CmtCircumstancesBinding
     {
-        get => IsValid ? CmtCircumstances : default;
+        get => IsValid ? CmtCircumstances : string.Empty;
         set => this.Commit(() => CmtCircumstances = value);
     }
 
@@ -95,7 +100,7 @@ public partial class SafetyFactors
 
     public string CmtAbuseBinding
     {
-        get => IsValid ? CmtAbuse : default;
+        get => IsValid ? CmtAbuse : string.Empty;
         set => this.Commit(() => CmtAbuse = value);
     }
 
@@ -107,7 +112,7 @@ public partial class SafetyFactors
 
     public string CmtProtectBinding
     {
-        get => IsValid ? CmtProtect : default;
+        get => IsValid ? CmtProtect : string.Empty;
         set => this.Commit(() => CmtProtect = value);
     }
 
@@ -119,7 +124,7 @@ public partial class SafetyFactors
 
     public string CmtExplanationBinding
     {
-        get => IsValid ? CmtExplanation : default;
+        get => IsValid ? CmtExplanation : string.Empty;
         set => this.Commit(() => CmtExplanation = value);
     }
 
@@ -131,7 +136,7 @@ public partial class SafetyFactors
 
     public string CmtAccessBinding
     {
-        get => IsValid ? CmtAccess : default;
+        get => IsValid ? CmtAccess : string.Empty;
         set => this.Commit(() => CmtAccess = value);
     }
 
@@ -143,7 +148,7 @@ public partial class SafetyFactors
 
     public string CmtNeedsBinding
     {
-        get => IsValid ? CmtNeeds : default;
+        get => IsValid ? CmtNeeds : string.Empty;
         set => this.Commit(() => CmtNeeds = value);
     }
 
@@ -155,7 +160,7 @@ public partial class SafetyFactors
 
     public string CmtConditionBinding
     {
-        get => IsValid ? CmtCondition : default;
+        get => IsValid ? CmtCondition : string.Empty;
         set => this.Commit(() => CmtCondition = value);
     }
 
@@ -167,7 +172,7 @@ public partial class SafetyFactors
 
     public string CmtCurrentBinding
     {
-        get => IsValid ? CmtCurrent : default;
+        get => IsValid ? CmtCurrent : string.Empty;
         set => this.Commit(() => CmtCurrent = value);
     }
 
@@ -179,7 +184,7 @@ public partial class SafetyFactors
 
     public string CmtViolenceBinding
     {
-        get => IsValid ? CmtViolence : default;
+        get => IsValid ? CmtViolence : string.Empty;
         set => this.Commit(() => CmtViolence = value);
     }
 
@@ -191,7 +196,7 @@ public partial class SafetyFactors
 
     public string CmtNegativeBinding
     {
-        get => IsValid ? CmtNegative : default;
+        get => IsValid ? CmtNegative : string.Empty;
         set => this.Commit(() => CmtNegative = value);
     }
 
@@ -203,7 +208,7 @@ public partial class SafetyFactors
 
     public string CmtEmotionalBinding
     {
-        get => IsValid ? CmtEmotional : default;
+        get => IsValid ? CmtEmotional : string.Empty;
         set => this.Commit(() => CmtEmotional = value);
     }
 
@@ -215,7 +220,7 @@ public partial class SafetyFactors
 
     public string CmtFearfulBinding
     {
-        get => IsValid ? CmtFearful : default;
+        get => IsValid ? CmtFearful : string.Empty;
         set => this.Commit(() => CmtFearful = value);
     }
 
@@ -227,7 +232,7 @@ public partial class SafetyFactors
 
     public string CmtOtherFactorsBinding
     {
-        get => IsValid ? CmtOtherFactors : default;
+        get => IsValid ? CmtOtherFactors : string.Empty;
         set => this.Commit(() => CmtOtherFactors = value);
     }
 }

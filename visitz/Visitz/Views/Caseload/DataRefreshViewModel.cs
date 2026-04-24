@@ -10,7 +10,7 @@ using Visitz.Views.BaseClasses;
 
 namespace Visitz.Views.Caseload;
 
-internal partial class DataRefreshViewModel : VisitzViewModel, IRecipient<ServiceStateMessage>
+public partial class DataRefreshViewModel : VisitzViewModel, IRecipient<ServiceStateMessage>
 {
     [ObservableProperty]
     public bool superMessageVisible = false;
@@ -48,7 +48,7 @@ internal partial class DataRefreshViewModel : VisitzViewModel, IRecipient<Servic
         base.Dispose(disposing);
     }
 
-    private void Current_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
+    private void Current_ConnectivityChanged(object? sender, ConnectivityChangedEventArgs e)
     {
         SetConnectivityMessage();
     }

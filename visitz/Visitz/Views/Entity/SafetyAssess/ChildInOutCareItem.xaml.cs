@@ -16,7 +16,7 @@ public partial class ChildInOutCareItem : ContentView
         PropertyChanged += ChildInOutCareItem_PropertyChanged;
     }
 
-    private void ChildInOutCareItem_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+    private void ChildInOutCareItem_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
         ConsoleTrace.TraceMethod(this, $"property: '{e.PropertyName}'");
     }

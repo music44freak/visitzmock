@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<base:IcmRecordContentView
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:base="clr-namespace:Visitz.Views.BaseClasses"
+    xmlns:controls="clr-namespace:Visitz.Controls"
+    xmlns:entity="clr-namespace:Visitz.Views.Entity"
+    xmlns:entityDetails="clr-namespace:Visitz.Views.Entity.Details"
+    xmlns:local="clr-namespace:Visitz.Localization"
+    xmlns:icons="clr-namespace:Visitz.FontIcons"
+    xmlns:popup="clr-namespace:Syncfusion.Maui.Toolkit.Popup;assembly=Syncfusion.Maui.Toolkit"
+    xmlns:tabView="clr-namespace:Syncfusion.Maui.Toolkit.TabView;assembly=Syncfusion.Maui.Toolkit"
+    xmlns:tagView="clr-namespace:Visitz.Views.TagViews"
+    x:Class="Visitz.Views.Entity.EntityView"
+    x:DataType="entity:EntityViewModel"
+    x:TypeArguments="entity:EntityViewModel"
+    BackgroundColor="{StaticResource Default_Background}"
+>
+    <base:IcmRecordContentView.Resources>
+        <ResourceDictionary>
+            <Style TargetType="tabView:SfTabItem">
+                <Setter Property="ImageSize" Value="{StaticResource DefaultFontSize}" />
+                <Setter Property="ImagePosition" Value="Left" />
+                <Setter Property="ImageTextSpacing" Value="{StaticResource DefaultSpacingHalf}" />
+            </Style>
+        </ResourceDictionary>
+    </base:IcmRecordContentView.Resources>
+
+    <Grid RowDefinitions="Auto,*">
+        <controls:TopAppBar
+            Grid.Row="0"
+            RowDefinitions="*, *"
+            ColumnDefinitions="Auto, *, Auto"
+            ColumnSpacing="{StaticResource DefaultSpacing}"
+            BackgroundColor="{StaticResource BuildBarBackgroundColor}"
+        >
+            <controls:FontIconButton
+                Grid.RowSpan="2"
+                VerticalOptions="Center"
+                Text="{Static icons:MaterialIcons.Arrow_back}"
+                TextColor="White"
+                FontFamily="MaterialIconsRoundedUnfilled"
+                Command="{Binding GoBackCommand}"
+            />
+
+            <Label
+                Grid.Row="0"
+                Grid.Column="1"
+                FontFamily="BCSansBold"
+                Text="{Binding BusinessObject.DisplayName}"
+                TextColor="White"
+            />
+
+            <Label
+                Grid.Row="1"
+                Grid.Column="1"
+                Text="{Binding BusinessObject.FileNumber}"
+                TextColor="White"
+            />
+
+            <ActivityIndicator
+                Grid.RowSpan="2"
+                Grid.Column="1"
+                IsRunning="{Binding DownloadActivity}"
+                IsVisible="{Binding DownloadActivity}"
+                HorizontalOptions="End"
+                Color="White"
+            />
+
+            <tagView:EntityTypeBadge
+                Grid.RowSpan="2"
+                Grid.Column="3"
+                BindingContext="{Binding BusinessObject}"
+                HorizontalOptions="End"
+                VerticalOptions="Center"
+            />
+        </controls:TopAppBar>
+
+        <tabView:SfTabView
+            x:Name="TabView"
+            Grid.Row="1"
+            TabBarBackground="{StaticResource Gray100}"
+            AnimationEasing="CubicInOut"
+            ContentTransitionDuration="250"
+            EnableVirtualization="True"
+            FontAutoScalingEnabled="True"
+            IndicatorWidthMode="Fit"
+            Items="{Binding TabItems}"
+            SelectedIndex="{Binding SelectedIndex}"
+            TabBarPlacement="Top"
+            TabWidthMode="SizeToContent"
+            IndicatorBackground="{StaticResource BuildBarBackgroundColor}"
+        />
+
+        <ContentView
+            Grid.Row="1"
+            BackgroundColor="{StaticResource Gray100}"
+            VerticalOptions="Start"
+            HorizontalOptions="Start"
+            HeightRequest="{Binding TabBarHeight}"
+            WidthRequest="60"
+        >
+            <controls:FontIconButton
+                Text="{Static icons:MaterialIcons.Menu}"
+                TextColor="Black"
+                FontFamily="MaterialIconsRoundedUnfilled"
+                VerticalOptions="Fill"
+                HorizontalOptions="Fill"
+                HeightRequest="-1"
+                WidthRequest="-1"
+                Clicked="TabListButton_Clicked"
+            />
+        </ContentView>
+
+        <popup:SfPopup
+            x:Name="TabPopup"
+            AnimationDuration="75"
+            ShowHeader="False"
+            AutoSizeMode="Both"
+            ShowOverlayAlways="False"
+        >
+            <popup:SfPopup.PopupStyle>
+                <popup:PopupStyle
+                    PopupBackground="{StaticResource Gray100}"
+                    HasShadow="True"
+                    CornerRadius="5"
+                />
+            </popup:SfPopup.PopupStyle>
+
+            <popup:SfPopup.ContentTemplate>
+                <DataTemplate x:DataType="entity:EntityViewModel">
+                    <entity:EntityVerticalTabList />
+                </DataTemplate>
+            </popup:SfPopup.ContentTemplate>
+        </popup:SfPopup>
+    </Grid>
+</base:IcmRecordContentView>

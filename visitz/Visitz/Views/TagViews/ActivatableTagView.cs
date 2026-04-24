@@ -30,7 +30,7 @@ public partial class ActivatableTagView : TagView, IActiveState
         GestureRecognizers.Add(tap);
     }
 
-    private void Tapped(object sender, TappedEventArgs e)
+    private void Tapped(object? sender, TappedEventArgs e)
     {
         if (ShouldCancelTapEvent?.Invoke(this, e) ?? false)
             return;

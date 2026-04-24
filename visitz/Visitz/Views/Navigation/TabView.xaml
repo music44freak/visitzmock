@@ -4,10 +4,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:base="clr-namespace:Visitz.Views.BaseClasses"
     xmlns:behaviors="clr-namespace:Visitz.Behaviors"
-    xmlns:selView="clr-namespace:Visitz.Views.SelectionView"
     xmlns:nav="clr-namespace:Visitz.Views.Navigation"
     x:Class="Visitz.Views.Navigation.TabView"
     x:DataType="nav:TabViewModel"
+    x:TypeArguments="nav:TabViewModel"
 >
     <HorizontalStackLayout>
         <HorizontalStackLayout.Behaviors>

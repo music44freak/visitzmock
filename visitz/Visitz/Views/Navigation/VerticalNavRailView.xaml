@@ -8,17 +8,16 @@
     xmlns:controls="clr-namespace:Visitz.Controls"
     xmlns:nav="clr-namespace:Visitz.Views.Navigation"
     xmlns:icons="clr-namespace:Visitz.FontIcons"
-    xmlns:selView="clr-namespace:Visitz.Views.SelectionView"
     xmlns:views="clr-namespace:Visitz.Views"
     x:Class="Visitz.Views.Navigation.VerticalNavRailView"
     x:DataType="nav:NavRailViewModel"
+    x:TypeArguments="nav:NavRailViewModel"
     BackgroundColor="{StaticResource BuildBarBackgroundColor}"
     WidthRequest="72"
 >
     <Grid RowDefinitions="Auto,Auto,*,Auto,Auto">
         <controls:FontIconButton
             Command="{Binding OpenNavDrawerCommand}"
-            IsVisible="{Binding ShowMenuButton}"
             Text="{Static icons:MaterialIcons.Menu}"
             FontFamily="MaterialIconsRoundedUnfilled"
             TextColor="White"

@@ -118,10 +118,15 @@ jobs:
           cache-dependency-path: ${{ env.PROJPATH }}/packages.lock.json
           cache: true
           global-json-file: ${{ env.GLOBAL_JSON_PATH }}
-          workloads: maui, maui-ios
+
+      - name: Install .NET MAUI ${{ env.MAUI_WORKLOAD_VERSION }} workloads
+        run: |
+          dotnet --version
+          dotnet workload install maui maui-ios --version ${{ env.DOTNET_SDK_VERSION }}
 
       - name: .NET release build for iOS (${{ inputs.environment }})
         run: |
+          dotnet --version
           dotnet publish $PROJPATH \
             --framework net10.0-ios \
             --configuration Release \

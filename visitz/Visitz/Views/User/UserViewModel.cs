@@ -10,7 +10,7 @@ using VisitzModel.Messaging;
 
 namespace Visitz.Views.User;
 
-internal partial class UserViewModel : VisitzViewModel
+public partial class UserViewModel : VisitzViewModel
 {
     [ObservableProperty]
     public string displayName;
@@ -96,7 +96,7 @@ internal partial class UserViewModel : VisitzViewModel
         );
     }
 
-    async void OidcSession_SessionChanged(object sender, Oidc.Events.SessionChangedEventArgs e)
+    async void OidcSession_SessionChanged(object? sender, Oidc.Events.SessionChangedEventArgs e)
     {
         if (!await OidcSession.SessionExistsAsync())
         {

@@ -25,7 +25,7 @@ namespace Visitz.Views.Drafts;
 
 #nullable enable
 
-internal partial class DraftsListViewModel : VisitzViewModel
+public partial class DraftsListViewModel : VisitzViewModel
 {
     bool _disposed;
 
@@ -103,7 +103,7 @@ internal partial class DraftsListViewModel : VisitzViewModel
         base.Dispose(disposing);
     }
 
-    private void QueryMap_ItemsChanged(object? _, (Type, IRealmCollection<IRealmObject> Items, ChangeSet Changes) e)
+    private void QueryMap_ItemsChanged(object? _, (Type, IRealmCollection<IRealmObject> Items, ChangeSet? Changes) e)
     {
         Type type = e.Item1;
 
@@ -121,7 +121,7 @@ internal partial class DraftsListViewModel : VisitzViewModel
 
     static void UpdateSupportingList<T>(
         IRealmCollection<IRealmObject> items,
-        ChangeSet changes,
+        ChangeSet? changes,
         ObservableCollection<T> draftsList
     )
         where T : IDraftItem

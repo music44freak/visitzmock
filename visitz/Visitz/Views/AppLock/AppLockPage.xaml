@@ -9,7 +9,7 @@
     x:Class="Visitz.Views.AppLock.AppLockPage"
     x:DataType="appLock:AppLockViewModel"
     xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
-    ios:Page.UseSafeArea="False"
+    SafeAreaEdges="None"
     Title=""
     BackgroundColor="{StaticResource Primary}"
 >
@@ -17,7 +17,7 @@
         <BackButtonBehavior IsEnabled="False" IsVisible="False" />
     </Shell.BackButtonBehavior>
 
-    <AbsoluteLayout BackgroundColor="Black" IgnoreSafeArea="True">
+    <AbsoluteLayout BackgroundColor="Black" SafeAreaEdges="None">
         <views:FeaturedBackgroundUnderlay
             AbsoluteLayout.LayoutFlags="All"
             AbsoluteLayout.LayoutBounds="0,0,1,1"
@@ -50,7 +50,7 @@
             <Label
                 Grid.Row="2"
                 Text="{local:Localize DeviceAuthReason}"
-                HorizontalOptions="FillAndExpand"
+                HorizontalOptions="Fill"
                 VerticalOptions="Center"
                 HorizontalTextAlignment="Center"
                 MaximumWidthRequest="500"

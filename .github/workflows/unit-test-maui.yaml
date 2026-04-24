@@ -46,7 +46,12 @@ jobs:
           cache-dependency-path: ${{ env.BASE_PROJPATH }}\Visitz\packages.lock.json
           cache: true
           global-json-file: ${{ env.GLOBAL_JSON_PATH }}
-          workloads: maui, ios, maccatalyst, maui-ios, maui-windows, maui-maccatalyst
+
+      - name: Install .NET MAUI workload
+        working-directory: ${{ env.BASE_PROJPATH }}
+        run: |
+          dotnet --version
+          dotnet workload install maui ios maccatalyst maui-ios maui-windows maui-maccatalyst --version ${{ env.DOTNET_SDK_VERSION }}
 
       - name: Build solution
         working-directory: ${{ env.BASE_PROJPATH }}

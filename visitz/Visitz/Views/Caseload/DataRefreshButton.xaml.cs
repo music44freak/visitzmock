@@ -4,10 +4,8 @@ using Visitz.Views.BaseClasses;
 
 namespace Visitz.Views.Caseload;
 
-public partial class DataRefreshButton : ViewModelContentView
+public partial class DataRefreshButton : ViewModelContentView<DataRefreshViewModel>
 {
-    new DataRefreshViewModel ViewModel => base.ViewModel as DataRefreshViewModel;
-
     public StackOrientation Orientation
     {
         get => ViewModel.Orientation;
@@ -37,7 +35,7 @@ public partial class DataRefreshButton : ViewModelContentView
         base.Dispose(disposing);
     }
 
-    private void Current_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
+    private void Current_ConnectivityChanged(object? sender, ConnectivityChangedEventArgs e)
     {
         SetIconByNetworkAccess();
     }

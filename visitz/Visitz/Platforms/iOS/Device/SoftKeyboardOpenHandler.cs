@@ -20,12 +20,12 @@ namespace Visitz.Device
             _keyboardWillHideToken.Dispose();
         }
 
-        private void OnKeyboardWillShow(object sender, UIKeyboardEventArgs e)
+        private void OnKeyboardWillShow(object? sender, UIKeyboardEventArgs e)
         {
             OnKeyboardStateChanged(true);
         }
 
-        private void OnKeyboardWillHide(object sender, UIKeyboardEventArgs e)
+        private void OnKeyboardWillHide(object? sender, UIKeyboardEventArgs e)
         {
             OnKeyboardStateChanged(false);
         }

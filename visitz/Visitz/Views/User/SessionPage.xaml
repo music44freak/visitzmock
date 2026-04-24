@@ -13,7 +13,7 @@
     NavigationPage.HasNavigationBar="False"
     BackgroundColor="Black"
 >
-    <AbsoluteLayout IgnoreSafeArea="True">
+    <AbsoluteLayout SafeAreaEdges="None">
         <views:FeaturedBackgroundUnderlay
             AbsoluteLayout.LayoutFlags="All"
             AbsoluteLayout.LayoutBounds="0,0,1,1"
@@ -21,7 +21,7 @@
         />
 
         <Grid
-            IgnoreSafeArea="False"
+            SafeAreaEdges="All"
             AbsoluteLayout.LayoutFlags="All"
             AbsoluteLayout.LayoutBounds="0,0,1,1"
             RowDefinitions="Auto,*,Auto"
@@ -105,8 +105,8 @@
                         Color="White"
                         HeightRequest="100"
                         WidthRequest="100"
-                        VerticalOptions="CenterAndExpand"
-                        HorizontalOptions="CenterAndExpand"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Center"
                         IsVisible="{Binding TryingAuthorization}"
                         IsRunning="{Binding TryingAuthorization}"
                     />

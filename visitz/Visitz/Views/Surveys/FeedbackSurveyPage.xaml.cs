@@ -37,7 +37,7 @@ public partial class FeedbackSurveyPage : ContentPage
         InitializeComponent();
     }
 
-    private async void StartSurvey_Clicked(object sender, EventArgs e)
+    private async void StartSurvey_Clicked(object? sender, EventArgs e)
     {
         var feedbackUri = new Uri(new AppSettings().ContactInfo.FeedbackSurveyUrl);
 

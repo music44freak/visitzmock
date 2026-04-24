@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<baseClasses:ViewModelContentView
+<baseClasses:IcmRecordContentView
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:baseClasses="clr-namespace:Visitz.Views.BaseClasses"
@@ -10,9 +10,10 @@
     xmlns:models="clr-namespace:VisitzModel.Models.Notes;assembly=VisitzModel"
     x:Class="Visitz.Views.Entity.Notes.EntityNotesView"
     x:DataType="notes:EntityNotesViewModel"
+    x:TypeArguments="notes:EntityNotesViewModel"
 >
-    <StackLayout Orientation="Vertical">
-        <AbsoluteLayout VerticalOptions="FillAndExpand">
+    <Grid RowDefinitions="*, 0.5, Auto">
+        <AbsoluteLayout Grid.Row="0" VerticalOptions="Fill">
             <VerticalStackLayout
                 AbsoluteLayout.LayoutFlags="PositionProportional"
                 AbsoluteLayout.LayoutBounds="0.5,0.5"
@@ -98,9 +99,9 @@
             </CollectionView>
         </AbsoluteLayout>
 
-        <BoxView Color="{StaticResource SeparatorColor}" HeightRequest="0.5" />
+        <BoxView Grid.Row="1" Color="{StaticResource SeparatorColor}" HeightRequest="0.5" />
 
-        <Grid Padding="10" RowDefinitions="Auto" ColumnDefinitions="Auto,*,Auto">
+        <Grid Grid.Row="2" Padding="10" RowDefinitions="Auto" ColumnDefinitions="Auto,*,Auto">
             <!-- TODO: Unhide this search button once notes search is implemented. -->
             <Button
                 IsVisible="False"
@@ -125,5 +126,5 @@
                 </Button.ImageSource>
             </Button>
         </Grid>
-    </StackLayout>
-</baseClasses:ViewModelContentView>
+    </Grid>
+</baseClasses:IcmRecordContentView>

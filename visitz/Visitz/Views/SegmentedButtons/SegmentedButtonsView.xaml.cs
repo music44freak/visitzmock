@@ -153,7 +153,7 @@ public partial class SegmentedButtonsView : BaseContentView
         return optionIndex == -1 ? null : (ActivatableTagView)Items.Children[optionIndex];
     }
 
-    private void ActivatableTagView_ActiveStateChanged(object sender, IActiveState.ActiveChangedEventArgs e)
+    private void ActivatableTagView_ActiveStateChanged(object? sender, IActiveState.ActiveChangedEventArgs e)
     {
         if (e.IsActive)
             HandleSingleActivation((ActivatableTagView)sender);

@@ -2,16 +2,14 @@ using Visitz.Resources.Localization;
 using Visitz.Views.BaseClasses;
 using Visitz.Views.Snackbar;
 using VisitzModel.Events;
-using VisitzModel.Interfaces;
-using VisitzModel.Models.Caseload;
 using VisitzModel.Models.SafetyAssess;
 
 namespace Visitz.Views.Entity.SafetyAssess;
 
-public partial class SafetyAssessmentEditView : ViewModelContentView, IBusinessObjectHolder
-{
-    protected new SafetyAssessmentEditViewModel ViewModel => (SafetyAssessmentEditViewModel)base.ViewModel;
+#nullable enable
 
+public partial class SafetyAssessmentEditView : IcmRecordContentView<SafetyAssessmentEditViewModel>
+{
     // It's preferable to use lifecycle methods to determine when auto-scrolling is allowed, but MAUI's lifecycles can
     // be unreliable--so we'll use a time-delayed bool.
     // TODO: Rework this so we don't allow a scroll until we guarantee all data
@@ -19,12 +17,6 @@ public partial class SafetyAssessmentEditView : ViewModelContentView, IBusinessO
     private bool canAutoScroll;
 
     private bool disposed;
-
-    public IBusinessObject BusinessObject
-    {
-        get => ViewModel.BusinessObject;
-        set => ViewModel.BusinessObject = value;
-    }
 
     public SafetyAssessmentEditView()
         : base(ServiceProvider.GetService<SafetyAssessmentEditViewModel>())
@@ -59,12 +51,12 @@ public partial class SafetyAssessmentEditView : ViewModelContentView, IBusinessO
         canAutoScroll = true;
     }
 
-    private async void SaveStateHandler_SaveStateChanged(object sender, DraftSaveStatusEventArgs e)
+    private async void SaveStateHandler_SaveStateChanged(object? sender, DraftSaveStatusEventArgs e)
     {
         await DraftAppBar.SetDraftState(e.State);
     }
 
-    private async void DiscardButton_Clicked(object sender, EventArgs e)
+    private async void DiscardButton_Clicked(object? sender, EventArgs e)
     {
         if (await PromptDiscard())
         {
@@ -84,7 +76,7 @@ public partial class SafetyAssessmentEditView : ViewModelContentView, IBusinessO
         );
     }
 
-    private async void SomeChildrenPlaced_CheckedChanged(object sender, CheckedChangedEventArgs e)
+    private async void SomeChildrenPlaced_CheckedChanged(object? sender, CheckedChangedEventArgs e)
     {
         if (canAutoScroll && e.Value)
         {

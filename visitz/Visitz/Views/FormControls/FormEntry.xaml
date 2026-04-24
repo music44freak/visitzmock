@@ -23,7 +23,7 @@
             HorizontalOptions="Start"
         />
 
-        <AbsoluteLayout VerticalOptions="FillAndExpand" Grid.Row="1" Grid.ColumnSpan="2">
+        <AbsoluteLayout Grid.Row="1" Grid.ColumnSpan="2">
             <Editor
                 x:Name="Editor"
                 AbsoluteLayout.LayoutFlags="XProportional,YProportional,WidthProportional"

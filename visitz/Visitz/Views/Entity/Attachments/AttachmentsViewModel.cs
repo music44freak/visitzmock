@@ -3,25 +3,22 @@ using Realms;
 using Visitz.Storage;
 using Visitz.Views.BaseClasses;
 using VisitzModel.Extensions;
-using VisitzModel.Interfaces;
 using VisitzModel.Models.Attachments;
-using VisitzModel.Models.Caseload;
 using VisitzModel.Models.Drafts;
 using VisitzModel.Storage.Filesystem;
 
 namespace Visitz.Views.Entity.Attachments;
 
-internal partial class AttachmentsViewModel : VisitzViewModel, IBusinessObjectHolder
+#nullable enable
+
+public partial class AttachmentsViewModel : IcmRecordViewModel
 {
     [ObservableProperty]
-    public IBusinessObject businessObject;
+    public IDraftItem? focusedDraftItem;
 
-    [ObservableProperty]
-    public IDraftItem focusedDraftItem;
+    Realm? AttachmentsRealm { get; set; }
 
-    Realm AttachmentsRealm { get; set; }
-
-    AttachmentFiler attachmentFiler;
+    AttachmentFiler? attachmentFiler;
 
     protected override async Task InitAsync()
     {

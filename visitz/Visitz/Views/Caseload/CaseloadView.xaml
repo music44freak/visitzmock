@@ -15,9 +15,11 @@
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:Class="Visitz.Views.Caseload.CaseloadView"
     x:DataType="caseload:CaseloadViewModel"
+    x:TypeArguments="caseload:CaseloadViewModel"
 >
-    <StackLayout Orientation="Vertical" HorizontalOptions="Fill" IsClippedToBounds="True">
+    <Grid RowDefinitions="Auto, *, Auto" IsClippedToBounds="True">
         <VerticalStackLayout
+            Grid.Row="0"
             BackgroundColor="White"
             Shadow="{StaticResource RestingLevel2}"
             ZIndex="2"
@@ -71,7 +73,7 @@
                     CancelButtonColor="{StaticResource BC_TextColor}"
                     TextColor="{StaticResource BC_TextColor}"
                     x:Name="CaseloadSearchBar"
-                    HorizontalOptions="FillAndExpand"
+                    HorizontalOptions="Fill"
                     Placeholder="{local:Localize CaseloadSearchHint}"
                     Text="{Binding SearchQuery}"
                     Margin="{OnPlatform iOS='-9', Default=0}"
@@ -148,7 +150,7 @@
             </VerticalStackLayout>
         </VerticalStackLayout>
 
-        <AbsoluteLayout VerticalOptions="FillAndExpand">
+        <AbsoluteLayout Grid.Row="1" VerticalOptions="Fill">
             <views:EmptyCollectionMessage
                 AbsoluteLayout.LayoutFlags="XProportional,YProportional,WidthProportional"
                 AbsoluteLayout.LayoutBounds="0.5,0.5,1,-1"
@@ -195,9 +197,10 @@
         </AbsoluteLayout>
 
         <views:LastUpdatedBanner
+            Grid.Row="2"
             HorizontalOptions="Fill"
             VerticalOptions="End"
             LastUpdated="{Binding LastUpdated}"
         />
-    </StackLayout>
+    </Grid>
 </baseClasses:ViewModelContentView>

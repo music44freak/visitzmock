@@ -61,7 +61,7 @@
 
                 <Label
                     Grid.Column="1"
-                    HorizontalOptions="StartAndExpand"
+                    HorizontalOptions="Start"
                     VerticalOptions="Center"
                     Text="{Binding BusinessObject.DisplayName}"
                     FontSize="16"

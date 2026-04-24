@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<base:ViewModelContentView
+<base:IcmRecordContentView
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:base="clr-namespace:Visitz.Views.BaseClasses"
@@ -13,12 +13,13 @@
     xmlns:tagview="clr-namespace:Visitz.Views.TagViews"
     x:Class="Visitz.Views.Entity.SupportNetwork.SupportNetworkListView"
     x:DataType="supportNetwork:SupportNetworkListViewModel"
+    x:TypeArguments="supportNetwork:SupportNetworkListViewModel"
 >
-    <base:ViewModelContentView.Resources>
+    <base:IcmRecordContentView.Resources>
         <ResourceDictionary>
             <converters:BoolNegationConverter x:Key="BoolNegationConverter" />
         </ResourceDictionary>
-    </base:ViewModelContentView.Resources>
+    </base:IcmRecordContentView.Resources>
 
     <Grid VerticalOptions="Fill" RowDefinitions="*">
         <CollectionView
@@ -163,4 +164,4 @@
 
         <controls:EmptyIcon Grid.Row="0" IsVisible="{Binding ShowEmptyIcon}" />
     </Grid>
-</base:ViewModelContentView>
+</base:IcmRecordContentView>

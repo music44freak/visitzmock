@@ -10,7 +10,6 @@ using Visitz.Views.Entity.Attachments;
 using Visitz.Views.Entity.ChildYouthVisits;
 using Visitz.Views.Entity.Details;
 using Visitz.Views.Entity.FamilyMembers;
-using Visitz.Views.Entity.Navigation;
 using Visitz.Views.Entity.Notes;
 using Visitz.Views.Entity.SafetyAssess;
 using Visitz.Views.Entity.SupportNetwork;
@@ -52,11 +51,8 @@ public static class VisitzScreens
         builder.Services.AddTransient<PdfDetailsView>();
         builder.Services.AddTransient<PdfDetailsViewModel>();
 
-        builder.Services.AddTransient<EntityNavView>();
-        builder.Services.AddTransient<EntityNavViewModel>();
-
-        builder.Services.AddTransient<EntityContainerView>();
-        builder.Services.AddTransient<EntityContainerViewModel>();
+        builder.Services.AddTransient<EntityView>();
+        builder.Services.AddTransient<EntityViewModel>();
 
         builder.Services.AddTransient<EntityDetailsView>();
         builder.Services.AddTransient<EntityDetailsViewModel>();

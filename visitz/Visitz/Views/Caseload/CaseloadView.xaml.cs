@@ -11,10 +11,8 @@ using CommunityToolkit.Maui.Core.Platform;
 
 namespace Visitz.Views.Caseload;
 
-public partial class CaseloadView : ViewModelContentView, IRecipient<ServiceStateMessage>
+public partial class CaseloadView : ViewModelContentView<CaseloadViewModel>, IRecipient<ServiceStateMessage>
 {
-    protected new CaseloadViewModel ViewModel => (CaseloadViewModel)base.ViewModel;
-
     public CaseloadView()
         : base(ServiceProvider.GetService<CaseloadViewModel>())
     {
@@ -29,15 +27,15 @@ public partial class CaseloadView : ViewModelContentView, IRecipient<ServiceStat
         /* Overriding to a no-op because class is a DI singleton */
     }
 
-    private void Picker_SelectedIndexChanged(object sender, EventArgs e)
+    private void Picker_SelectedIndexChanged(object? sender, EventArgs e)
     {
         ViewModel.Lister.ApplyWithFilter();
     }
 
 #if MACCATALYST
-    private void CaseloadSearchBar_SearchButtonPressed(object sender, EventArgs e)
+    private void CaseloadSearchBar_SearchButtonPressed(object? sender, EventArgs e)
 #else
-    private async void CaseloadSearchBar_SearchButtonPressed(object sender, EventArgs e)
+    private async void CaseloadSearchBar_SearchButtonPressed(object? sender, EventArgs e)
 #endif
     {
         ViewModel.SearchCaseload();
@@ -47,17 +45,17 @@ public partial class CaseloadView : ViewModelContentView, IRecipient<ServiceStat
 #endif
     }
 
-    private void CaseloadSearchBar_TextChanged(object sender, TextChangedEventArgs e)
+    private void CaseloadSearchBar_TextChanged(object? sender, TextChangedEventArgs e)
     {
         ViewModel.SearchCaseload();
     }
 
-    private void ListOptionsButton_Clicked(object sender, EventArgs e)
+    private void ListOptionsButton_Clicked(object? sender, EventArgs e)
     {
         OptionsLayout.IsVisible = !OptionsLayout.IsVisible;
     }
 
-    private void ClearFilterButton_Clicked(object sender, EventArgs e)
+    private void ClearFilterButton_Clicked(object? sender, EventArgs e)
     {
         ViewModel.ActivatedFilterOption = null;
     }

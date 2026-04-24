@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<baseClasses:ViewModelContentView
+<baseClasses:IcmRecordContentView
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:baseClasses="clr-namespace:Visitz.Views.BaseClasses"
@@ -17,12 +17,13 @@
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:Class="Visitz.Views.Entity.SafetyAssess.SafetyAssessmentEditView"
     x:DataType="safetyAssess:SafetyAssessmentEditViewModel"
+    x:TypeArguments="safetyAssess:SafetyAssessmentEditViewModel"
 >
-    <baseClasses:ViewModelContentView.Behaviors>
+    <baseClasses:IcmRecordContentView.Behaviors>
         <behaviors:SoftKbResizeBehavior />
-    </baseClasses:ViewModelContentView.Behaviors>
+    </baseClasses:IcmRecordContentView.Behaviors>
 
-    <baseClasses:ViewModelContentView.Resources>
+    <baseClasses:IcmRecordContentView.Resources>
         <Style TargetType="Label" BasedOn="{StaticResource BaseLabelStyle}">
             <Setter Property="HorizontalOptions" Value="Start" />
             <Setter Property="VerticalOptions" Value="Center" />
@@ -84,7 +85,7 @@
             <converters:YesNoAnswerToBoolConverter x:Key="YesNoToBool" />
             <converters:BoolNegationConverter x:Key="BoolNegationConverter" />
         </ResourceDictionary>
-    </baseClasses:ViewModelContentView.Resources>
+    </baseClasses:IcmRecordContentView.Resources>
 
     <Border Background="White" Padding="-5" StrokeShape="RoundRectangle 10" StrokeThickness="0">
         <Grid RowDefinitions="Auto,*,0.5,Auto">
@@ -600,4 +601,4 @@
             </ScrollView>
         </Grid>
     </Border>
-</baseClasses:ViewModelContentView>
+</baseClasses:IcmRecordContentView>

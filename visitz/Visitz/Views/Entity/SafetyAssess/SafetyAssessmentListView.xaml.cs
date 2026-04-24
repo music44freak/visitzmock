@@ -1,24 +1,19 @@
+using Visitz.Resources.Localization;
 using Visitz.Views.BaseClasses;
-using VisitzModel.Interfaces;
-using VisitzModel.Models.Caseload;
 using VisitzModel.Models.Navigation;
 
 namespace Visitz.Views.Entity.SafetyAssess;
 
-public partial class SafetyAssessmentListView : ViewModelContentView, IBusinessObjectHolder, IRequestedEntitySection
+#nullable enable
+
+public partial class SafetyAssessmentListView
+    : IcmRecordContentView<SafetyAssessmentListViewModel>,
+        IRequestedEntitySection
 {
-    new SafetyAssessmentListViewModel ViewModel => base.ViewModel as SafetyAssessmentListViewModel;
-
-    public IBusinessObject BusinessObject
-    {
-        get => ViewModel.BusinessObject;
-        set => ViewModel.BusinessObject = value;
-    }
-
     public EntitySection RequestedSection { get; set; }
 
     public SafetyAssessmentListView()
-        : base(ServiceProvider.GetService<SafetyAssessmentListViewModel>())
+        : base(ServiceProvider.GetService<SafetyAssessmentListViewModel>(), LocalizedStrings.SafetyAssessment)
     {
         InitializeComponent();
         BindingContext = ViewModel;

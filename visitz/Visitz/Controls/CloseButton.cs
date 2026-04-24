@@ -19,7 +19,7 @@ internal class CloseButton : FontIconButton
         Clicked += CloseButton_Clicked;
     }
 
-    private async void CloseButton_Clicked(object sender, EventArgs e)
+    private async void CloseButton_Clicked(object? sender, EventArgs e)
     {
         var closingEventArgs = new ClosingEventArgs();
         Closing?.Invoke(this, closingEventArgs);

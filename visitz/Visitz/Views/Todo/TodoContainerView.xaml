@@ -10,6 +10,7 @@
     xmlns:views="clr-namespace:Visitz.Views"
     x:Class="Visitz.Views.Todo.TodoContainerView"
     x:DataType="todo:TodoContainerViewModel"
+    x:TypeArguments="todo:TodoContainerViewModel"
     BackgroundColor="{StaticResource Default_Background}"
 >
     <Grid RowDefinitions="Auto, *">

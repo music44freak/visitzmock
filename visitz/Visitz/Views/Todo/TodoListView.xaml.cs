@@ -4,7 +4,7 @@ namespace Visitz.Views.Todo;
 
 #nullable enable
 
-public partial class TodoListView : ViewModelContentView
+public partial class TodoListView : ViewModelContentView<TodoListViewModel>
 {
     public TodoListView()
         : base(ServiceProvider.GetService<TodoListViewModel>())

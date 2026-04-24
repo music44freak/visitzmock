@@ -75,12 +75,12 @@ public partial class AppLockPage : VisitzPage
         return BackButtonEnabled;
     }
 
-    private async void Unlock_Clicked(object sender, EventArgs e)
+    private async void Unlock_Clicked(object? sender, EventArgs e)
     {
         await AppLockViewModel.PromptAuthentication();
     }
 
-    public async void AppLockPage_WindowResumed(object sender, EventArgs eventArgs)
+    public async void AppLockPage_WindowResumed(object? sender, EventArgs eventArgs)
     {
         await AppLockViewModel.PromptAuthentication();
     }

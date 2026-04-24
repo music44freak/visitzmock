@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<base:ViewModelContentView
+<base:IcmRecordContentView
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:base="clr-namespace:Visitz.Views.BaseClasses"
@@ -11,11 +11,12 @@
     xmlns:safetyModels="clr-namespace:VisitzModel.Models.SafetyAssess;assembly=VisitzModel"
     x:Class="Visitz.Views.Entity.SafetyAssess.SafetyAssessmentListView"
     x:DataType="safety:SafetyAssessmentListViewModel"
+    x:TypeArguments="safety:SafetyAssessmentListViewModel"
 >
-    <base:ViewModelContentView.Resources>
+    <base:IcmRecordContentView.Resources>
         <converters:DateTimeOffsetShortTimestampConverter x:Key="ShortTimestampConverter" />
         <converters:BoolNegationConverter x:Key="BoolNegationConverter" />
-    </base:ViewModelContentView.Resources>
+    </base:IcmRecordContentView.Resources>
 
     <Grid RowDefinitions="*,0.5,Auto">
         <VerticalStackLayout IsVisible="{Binding IsEmpty, Converter={StaticResource BoolNegationConverter}}">
@@ -106,4 +107,4 @@
             </Button>
         </Grid>
     </Grid>
-</base:ViewModelContentView>
+</base:IcmRecordContentView>

@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Specialized;
 using System.Windows.Input;
-using Visitz.VisualStates;
 
 namespace Visitz.Behaviors;
 
@@ -9,12 +8,15 @@ namespace Visitz.Behaviors;
 
 internal partial class SelectionLayoutBehavior : Behavior<Layout>
 {
+    const string SelectedState = "Selected";
+    const string NormalState = "Normal";
+
     protected static readonly BindableProperty SelectedItemViewProperty = BindableProperty.Create(
         nameof(SelectedItemView),
-        typeof(object),
+        typeof(View),
         typeof(SelectionLayoutBehavior),
         defaultBindingMode: BindingMode.TwoWay,
-        propertyChanged: (bound, old, @new) => SelectedItemView_Changed(old, @new)
+        propertyChanged: (bound, old, @new) => SelectedItemView_Changed(old as View, @new as View)
     );
 
     public static readonly BindableProperty ItemsSourceProperty = BindableProperty.Create(
@@ -22,7 +24,7 @@ internal partial class SelectionLayoutBehavior : Behavior<Layout>
         typeof(IList),
         typeof(SelectionLayoutBehavior),
         propertyChanged: (bound, old, @new) =>
-            (bound as SelectionLayoutBehavior)?.ItemsSource_Changed(old as IList, @new as IList)
+            ((SelectionLayoutBehavior)bound).ItemsSource_Changed(old as IList, @new as IList)
     );
 
     public static readonly BindableProperty SelectedItemProperty = BindableProperty.Create(
@@ -30,7 +32,7 @@ internal partial class SelectionLayoutBehavior : Behavior<Layout>
         typeof(object),
         typeof(SelectionLayoutBehavior),
         defaultBindingMode: BindingMode.TwoWay,
-        propertyChanged: (bound, old, @new) => (bound as SelectionLayoutBehavior)?.SelectedItem_Changed(@new)
+        propertyChanged: (bound, old, @new) => ((SelectionLayoutBehavior)bound).SelectedItem_Changed(@new)
     );
 
     public static readonly BindableProperty SelectionChangedCommandProperty = BindableProperty.Create(
@@ -51,9 +53,9 @@ internal partial class SelectionLayoutBehavior : Behavior<Layout>
         typeof(SelectionLayoutBehavior)
     );
 
-    protected ISelectedState? SelectedItemView
+    View? SelectedItemView
     {
-        get => (ISelectedState)GetValue(SelectedItemViewProperty);
+        get => (View?)GetValue(SelectedItemViewProperty);
         set => SetValue(SelectedItemViewProperty, value);
     }
 
@@ -69,9 +71,9 @@ internal partial class SelectionLayoutBehavior : Behavior<Layout>
         set => SetValue(SelectedItemProperty, value);
     }
 
-    public ICommand SelectionChangedCommand
+    public ICommand? SelectionChangedCommand
     {
-        get => (ICommand)GetValue(SelectionChangedCommandProperty);
+        get => (ICommand?)GetValue(SelectionChangedCommandProperty);
         set => SetValue(SelectionChangedCommandProperty, value);
     }
 
@@ -87,7 +89,7 @@ internal partial class SelectionLayoutBehavior : Behavior<Layout>
         set => SetValue(StickySelectionProperty, value);
     }
 
-    public Layout? Layout { get; private set; }
+    Layout? Layout { get; set; }
 
     protected override void OnAttachedTo(Layout layout)
     {
@@ -127,8 +129,7 @@ internal partial class SelectionLayoutBehavior : Behavior<Layout>
     {
         if (newSource != null)
         {
-            if (newSource is INotifyCollectionChanged newCollection)
-                newCollection.CollectionChanged += ItemsSource_CollectionChanged;
+            (newSource as INotifyCollectionChanged)?.CollectionChanged += ItemsSource_CollectionChanged;
 
             if (AutoSelectDefault && newSource.Count > 0 && SelectedItem == null)
                 SelectedItem = newSource[0];
@@ -153,69 +154,67 @@ internal partial class SelectionLayoutBehavior : Behavior<Layout>
             SelectedItem = null;
     }
 
-    static void SelectedItemView_Changed(object oldValue, object newValue)
+    static void SelectedItemView_Changed(View? oldView, View? newView)
     {
-        if (oldValue is ISelectedState oldSelected)
-            oldSelected.IsSelected = false;
+        if (oldView != null)
+            VisualStateManager.GoToState(oldView, NormalState);
 
-        if (newValue is ISelectedState newSelected)
-            newSelected.IsSelected = true;
+        if (newView != null)
+            VisualStateManager.GoToState(newView, SelectedState);
     }
 
-    ISelectedState? GetSelectableViewByItem(object? item)
+    View? GetViewForItem(object? item)
     {
         if (Layout == null || item == null)
             return null;
 
         foreach (var child in Layout.Children)
-            if (child is ISelectedState selItem && child is View view && view.BindingContext == item)
-                return selItem;
+            if (child is View view && view.BindingContext == item)
+                return view;
 
         return null;
     }
 
     void SelectedItem_Changed(object? newValue)
     {
-        SelectedItemView = GetSelectableViewByItem(newValue);
+        SelectedItemView = GetViewForItem(newValue);
         SelectionChangedCommand?.Execute(newValue);
     }
 
     void Bindable_ChildAdded(object? sender, ElementEventArgs e)
     {
-        if (e.Element is View view)
-        {
-            PointerGestureRecognizer point = new();
-            point.PointerReleased += Point_PointerReleased;
-            view.GestureRecognizers.Add(point);
+        if (e.Element is not View view)
+            return;
 
-            if (view is ISelectedState selectable && view.BindingContext == SelectedItem)
-                SelectedItemView = selectable;
-        }
+        var pointer = new PointerGestureRecognizer();
+        pointer.PointerReleased += Point_PointerReleased;
+        view.GestureRecognizers.Add(pointer);
+
+        if (SelectedItem != null)
+            SelectedItemView = GetViewForItem(SelectedItem);
     }
 
     void Bindable_ChildRemoved(object? sender, ElementEventArgs e)
     {
         if (e.Element is View view)
             foreach (var g in view.GestureRecognizers)
-                if (g is PointerGestureRecognizer tap)
-                    tap.PointerReleased -= Point_PointerReleased;
+                if (g is PointerGestureRecognizer p)
+                    p.PointerReleased -= Point_PointerReleased;
     }
 
     void Point_PointerReleased(object? sender, PointerEventArgs e)
     {
-        if (sender is not ISelectedState selectableItem || PreventDeselection(selectableItem))
+        if (sender is not View view || PreventDeselection(view))
             return;
 
-        selectableItem.IsSelected = !selectableItem.IsSelected;
-
-        if (selectableItem.IsSelected && selectableItem is BindableObject bindable)
-            SelectedItem = bindable.BindingContext;
-        else if (!selectableItem.IsSelected)
+        if (view == SelectedItemView)
             SelectedItem = null;
+        else
+            SelectedItem = view.BindingContext;
     }
 
-    bool PreventDeselection(ISelectedState selectableItem)
+    bool PreventDeselection(View view)
     {
-        return StickySelection && (SelectedItemView?.Equals(selectableItem) ?? false) && selectableItem.IsSelected;
+        return StickySelection && view == SelectedItemView;
     }
 }

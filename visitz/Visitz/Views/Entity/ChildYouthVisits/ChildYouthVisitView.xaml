@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<baseClasses:ViewModelContentView
+<baseClasses:IcmRecordContentView
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:baseClasses="clr-namespace:Visitz.Views.BaseClasses"
@@ -15,24 +15,25 @@
     xmlns:visitStrings="clr-namespace:VisitzModel.Resources.Localization;assembly=VisitzModel"
     x:Class="Visitz.Views.Entity.ChildYouthVisits.ChildYouthVisitView"
     x:DataType="childYouthVisit:ChildYouthVisitViewModel"
+    x:TypeArguments="childYouthVisit:ChildYouthVisitViewModel"
 >
-    <baseClasses:ViewModelContentView.Resources>
+    <baseClasses:IcmRecordContentView.Resources>
         <ResourceDictionary>
             <toolkit:DateTimeOffsetConverter x:Key="DateTimeOffsetConverter" />
             <converters:BoolNegationConverter x:Key="BoolNegationConverter" />
         </ResourceDictionary>
-    </baseClasses:ViewModelContentView.Resources>
+    </baseClasses:IcmRecordContentView.Resources>
 
-    <baseClasses:ViewModelContentView.Behaviors>
+    <baseClasses:IcmRecordContentView.Behaviors>
         <behaviors:SoftKbResizeBehavior />
-    </baseClasses:ViewModelContentView.Behaviors>
+    </baseClasses:IcmRecordContentView.Behaviors>
 
     <Border Background="White" Padding="-5" StrokeShape="RoundRectangle 10" StrokeThickness="0">
         <Grid
             Margin="5"
             Padding="20"
-            HorizontalOptions="FillAndExpand"
-            VerticalOptions="FillAndExpand"
+            HorizontalOptions="Fill"
+            VerticalOptions="Fill"
             RowDefinitions="Auto, *"
         >
             <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto">
@@ -155,7 +156,7 @@
                         Text="{Binding RemainingCharacters, StringFormat={Static childYouthVisit:ChildYouthVisitViewModel.RemainingCharactersString}}"
                         Style="{StaticResource LabelSmall}"
                     />
-                    <AbsoluteLayout Grid.Row="1" VerticalOptions="FillAndExpand">
+                    <AbsoluteLayout Grid.Row="1">
                         <controls:EditorEx
                             x:Name="VisitsEditor"
                             AbsoluteLayout.LayoutFlags="All"
@@ -183,4 +184,4 @@
             </Grid>
         </Grid>
     </Border>
-</baseClasses:ViewModelContentView>
+</baseClasses:IcmRecordContentView>

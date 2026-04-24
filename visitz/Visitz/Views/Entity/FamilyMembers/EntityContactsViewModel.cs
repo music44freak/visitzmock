@@ -1,25 +1,17 @@
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Realms;
-using Visitz.Storage;
 using Visitz.Views.BaseClasses;
-using VisitzModel.Interfaces;
 using VisitzModel.Models;
-using VisitzModel.Models.Caseload;
 using VisitzModel.Models.People;
 
 namespace Visitz.Views.Entity.FamilyMembers;
 
 #nullable enable
 
-public partial class EntityContactsViewModel : VisitzViewModel, IBusinessObjectHolder
+public partial class EntityContactsViewModel : IcmRecordViewModel
 {
     readonly ObservableRealmQueryMap realmQueryMap = new();
-
-    Realm? Realm { get; set; }
-
-    [ObservableProperty]
-    public IBusinessObject? businessObject;
 
     [ObservableProperty]
     public ObservableCollection<ContactItemViewModel> contactViewModels = [];
@@ -31,10 +23,11 @@ public partial class EntityContactsViewModel : VisitzViewModel, IBusinessObjectH
     {
         await base.InitAsync();
 
-        Realm = await VisitzRealms.GetIcmDataRealmAsync();
+        if (DataRealm == null)
+            return;
 
         realmQueryMap.ItemsChanged += RealmQueryMap_ItemsChanged;
-        realmQueryMap.Subscribe(Realm, IcmContact.GetByParentObject(Realm, BusinessObject));
+        realmQueryMap.Subscribe(DataRealm, IcmContact.GetByParentObject(DataRealm, BusinessObject));
     }
 
     bool disposed;
@@ -53,7 +46,7 @@ public partial class EntityContactsViewModel : VisitzViewModel, IBusinessObjectH
 
     private void RealmQueryMap_ItemsChanged(
         object? sender,
-        (Type Type, IRealmCollection<IRealmObject> Items, ChangeSet Changes) e
+        (Type Type, IRealmCollection<IRealmObject> Items, ChangeSet? Changes) e
     )
     {
         var comparer = new IcmContactRelationshipComparer();
@@ -72,7 +65,7 @@ public partial class EntityContactsViewModel : VisitzViewModel, IBusinessObjectH
             // we need to do another full query to see differences.
 
             List<IcmContact> contactsCopy = ContactViewModels.Select(vm => vm.Contact).ToList();
-            var savedContacts = IcmContact.GetByParentObject(Realm, BusinessObject).ToList();
+            var savedContacts = IcmContact.GetByParentObject(DataRealm, BusinessObject).ToList();
 
             var removed = contactsCopy.Except(savedContacts);
             var added = savedContacts.Except(contactsCopy);
